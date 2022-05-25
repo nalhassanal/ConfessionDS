@@ -166,6 +166,8 @@ public class WeightedGraph <T extends Comparable<T>, N extends Comparable<N>>{
         return addEdge(src, dst, weight) && addEdge(dst, src, weight);
     }
 
+    // TODO : find out which is the better return type of remove edge
+
 //    public Edge<T, N> removeEdge(T src, T dst){}
 
 //    public boolean removeEdge(T src, T dst){}
