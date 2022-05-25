@@ -23,4 +23,6 @@ public class SQLconnect {
 
         return con;
     }
+
+    // TODO plan out tables so that can store confession data
 }
