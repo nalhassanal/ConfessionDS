@@ -11,6 +11,5 @@ public class test {
         }
         else
             System.out.println("error");
-        System.out.println("zaba cibai");
     }
 }
