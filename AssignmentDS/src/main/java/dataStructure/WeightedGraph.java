@@ -166,47 +166,7 @@ public class WeightedGraph <T extends Comparable<T>, N extends Comparable<N>>{
         return addEdge(src, dst, weight) && addEdge(dst, src, weight);
     }
 
-    // TODO : find out which is the better return type of remove edge
-
-//    public Edge<T, N> removeEdge(T src, T dst){
- /*       if (!hasEdge(src, dst))
-            return null;
-        Vertex<T, N> source = head;
-        while (source != null){
-            if (source.vertexObject.compareTo(src) == 0){
-                Edge<T, N> currentEdge = source.firstEdge;
-                if (currentEdge.dest.vertexObject.compareTo(dst) == 0){
-                    Edge<T, N> retEdge = source.firstEdge;
-                    source.firstEdge = currentEdge.nextEdge;
-                    currentEdge.nextEdge = null;
-                    source.outdeg--;
-                    currentEdge.dest.indeg--;
-                    return retEdge;
-                }
-                else {
-                    Edge<T, N> prevEdge = currentEdge;
-                    while (currentEdge != null){
-                        if (currentEdge.dest.vertexObject.compareTo(dst) == 0){
-                            Edge<T, N> retEdge = prevEdge.nextEdge;
-                            prevEdge.nextEdge = currentEdge.nextEdge;
-                            currentEdge.nextEdge = null;
-                            source.outdeg--;
-                            currentEdge.dest.indeg--;
-                            return retEdge;
-                        }
-                        prevEdge = currentEdge;
-                        currentEdge = currentEdge.nextEdge;
-                    }
-                }
-            }
-            source = source.nextVertex;
-        }
-        return null;
-    }
-    */
-
-//    public boolean removeEdge(T src, T dst){
-    /*
+    public boolean removeEdge(T src, T dst){
         if (!hasEdge(src, dst))
             return false;
         Vertex<T, N> source = head;
@@ -236,7 +196,6 @@ public class WeightedGraph <T extends Comparable<T>, N extends Comparable<N>>{
         }
         return false;
     }
-    */
 
     public N getEdgeWeight(T src, T dst){
         if (head == null)
