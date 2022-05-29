@@ -1,5 +1,6 @@
 package dataStructure;
 import java.util.ArrayList;
+import main.confessionPair;
 public class Graph <T extends Comparable<T>>{
 
     private WeightedGraph <T, Integer> graph;
