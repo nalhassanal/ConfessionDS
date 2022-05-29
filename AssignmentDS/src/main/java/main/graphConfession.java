@@ -3,12 +3,20 @@ import dataStructure.*;
 public class graphConfession {
     public static void main(String[] args) {
         Graph<confessionPair> test = new Graph<>();
-        confessionPair test1 = new confessionPair("DS00003", "jflajskd");
+        confessionPair test1 = new confessionPair("DS00001", "jflajskd");
         confessionPair test2 = new confessionPair("DS00002", "jflajskd");
-        System.out.println(test1.compareTo(test2));
-        test.addVertex(test1);
-        test.addVertex(test2);
-        test.addUndirectedEdge(test1,test2);
-        test.printEdges();
+        confessionPair test3 = new confessionPair("DS00003", "jflajskd");
+
+        confessGraph<confessionPair> graph = new confessGraph<>();
+
+        graph.addVertex(test1);
+        graph.addVertex(test2);
+        graph.addVertex(test3);
+//        graph.addUndirectedEdge(test1, test2);
+        graph.addEdge(test1, test2);
+        graph.addEdge(test1, test3);
+        graph.addUndirectedEdge(test2,test3);
+        graph.printEdges();
+
     }
 }

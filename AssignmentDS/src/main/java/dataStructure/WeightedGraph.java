@@ -9,6 +9,10 @@ public class WeightedGraph <T extends Comparable<T>, N extends Comparable<N>>{
         size = 0;
     }
 
+    protected Vertex<T, N> getHead(){
+        return this.head;
+    }
+
     public void clear(){
         head = null;
     }
