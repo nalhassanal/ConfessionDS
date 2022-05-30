@@ -109,6 +109,8 @@ public class confessGraph <T extends confessionPair>{
             System.out.println();
             curr = curr.nextVertex;
         }
+        
+        // test2
     }
 
 }

@@ -100,5 +100,14 @@ public class Graph <T extends Comparable<T>>{
     public void printEdges(){
         graph.printEdges();
     }
+    
+     public T Search(int ConfessId){
+        if (ConfessId > size - 1 || ConfessId < 0)
+            return null;
+        Vertex<T, Integer> curr = head;
+        for (int i = 0; i < ConfessId; i++)
+            curr = curr.nextVertex;
+        return curr.vertexObject;
+    }
 
 }
