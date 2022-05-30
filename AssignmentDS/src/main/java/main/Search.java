@@ -9,7 +9,7 @@ package main;
  * @author User
  */
 public class Search<E> {
-//    
+//    aku try try je push commit ni
 //    
 //       public E getValue(int index){
 //        if (index<0 || index>size) return null; //invalid index
