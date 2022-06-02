@@ -69,20 +69,25 @@ public class tryWithHashmap {
     }
 
     public static Multimap<String, String> readFromFile(){
-        Multimap<String, String> map = ArrayListMultimap.create();
-        String filepath = ".\\dataFiles\\test.txt";
+        Multimap<String, String> map = ArrayListMultimap.create(); // creates a Multimap object for return
+        String filepath = ".\\dataFiles\\test.txt"; // specify filepath
         File file = new File(filepath);
         BufferedReader br = null;
+        // try creating a fileReader object first, if it succeeds continue with block, else continue to catch
         try (FileReader fr = new FileReader(file)){
-            br = new BufferedReader(fr);
+            br = new BufferedReader(fr); // create a bufferedReader object
             String line = null;
-            while ((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null){ // goes through each line in the text file
                 // split line by = sign
                 String [] data = line.split("=");
 
+                // get the individual components such as the key and value
+                // also removes other unneeded character such as '{' and '}'
                 String key = data[0].trim().replace("{", "");
                 String value = data[1].trim().replace("}","");
 
+                // checks if the key and value pairs are not empty
+                // will put the key value pair in the map if and only if true
                 if (!key.equals("") && !value.equals(""))
                     map.put(key, value);
             }
@@ -90,6 +95,7 @@ public class tryWithHashmap {
             ex.printStackTrace();
         }
         finally {
+            // always closes the inputStream
             if(br != null)
                 try {
                     br.close();
