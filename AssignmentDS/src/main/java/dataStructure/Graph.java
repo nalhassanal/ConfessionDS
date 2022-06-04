@@ -109,5 +109,24 @@ public class Graph <T extends Comparable<T>>{
             curr = curr.nextVertex;
         return curr.vertexObject;
     }
+     
+        public boolean removeVertex(T vertex){
+            System.out.println("vertex index: " + getIndex(vertex));
+            
+         Vertex<T,Integer> current = head;
+         
+         for(int i=0; i < getIndex(vertex)-1; i++){
+             current = current.nextVertex;
+             System.out.println("removed vertex: " + current.nextVertex.vertexObject);
+             
+             Vertex<T,Integer> temp = current.nextVertex;
+             current.nextVertex = temp.nextVertex;
+             size--;
+             
+         }
+            
+         
+         return true;
+    }
 
 }

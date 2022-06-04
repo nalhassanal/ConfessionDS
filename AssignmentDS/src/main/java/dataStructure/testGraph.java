@@ -13,6 +13,8 @@ public class testGraph {
         System.out.println();
 
         System.out.println("Add edge from a to b : " + graph.addEdge("a", "b"));
+        graph.addEdge("a", "d");
+        graph.addEdge("d", "e");
 
 //        System.out.println(graph.getEdgeWeight("a" , "b"));
 

@@ -84,6 +84,7 @@ public class WeightedGraph <T extends Comparable<T>, N extends Comparable<N>>{
 
             if (head == null)
                 head = newVertex;
+            
             else {
                 Vertex<T, N> curr = head;
                 while (temp != null){
@@ -97,6 +98,7 @@ public class WeightedGraph <T extends Comparable<T>, N extends Comparable<N>>{
         }
         return false;
     }
+    
 
     public int getIndex(T vertexNode){
         Vertex<T, N> curr = head;
@@ -254,9 +256,57 @@ public class WeightedGraph <T extends Comparable<T>, N extends Comparable<N>>{
         }
         System.out.println();
     }
+    
+    public boolean removeEdgeasdas(T src, T dst){
+        if (!hasEdge(src, dst))
+            return false;
+        Vertex<T, N> source = head;
+        while (source != null){
+            if (source.vertexObject.compareTo(src) == 0){
+                Edge <T, N> currentEdge = source.firstEdge;
+                if (currentEdge.dest.vertexObject.compareTo(dst) == 0){
+                    source.firstEdge = currentEdge.nextEdge;
+                    currentEdge.nextEdge = null;
+                }
+                else {
+                    Edge<T, N> prevEdge = currentEdge;
+                    while (currentEdge != null){
+                        if (currentEdge.dest.vertexObject.compareTo(dst) == 0){
+                            prevEdge.nextEdge = currentEdge.nextEdge;
+                            currentEdge.nextEdge = null;
+                            break;
+                        }
+                    }
+                }
+                source.outdeg--;
+                currentEdge.dest.indeg--;
+                System.out.println("Edge from " + src + " to " + dst + " has been removed.");
+                return true;
+            }
+            source = source.nextVertex;
+        }
+        return false;
+    }
 
-
-
+    
+    
+    public T removeVertex(T vertex){
+        
+         Vertex<T,N> removing = head;
+         
+         while(removing!=null){
+             if(removing.vertexObject.equals(vertex)){
+                 Vertex<T,N> temp = removing.nextVertex;
+                 removing = temp; //to copy vertex temp into removing
+                 removing.nextVertex = temp.nextVertex;
+                 temp = null;
+                 size--;
+                 
+             }
+         }
+         return removing.vertexObject;
+    }
+    
 
 
 
