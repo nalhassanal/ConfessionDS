@@ -131,6 +131,7 @@ public class FileUtil {
     }
 
     // used to store confessions
+    // returns all id, content in one hashmap
     public HashMap<String, String> mapFromFile(){
         HashMap<String, String> map = new HashMap<>();
         String filepath = ".\\dataFiles\\confession.txt";

@@ -29,6 +29,8 @@ public class confession {
                 System.out.println("------------------------------------------------------------"); // 60 - signs
                 System.out.println(">> Confession post ID exists!");
                 System.out.println("============================================================"); // 60 = signs
+                // reply method 
+                // masuk dalma file yang reply
                 createConfession();
             }
         }
