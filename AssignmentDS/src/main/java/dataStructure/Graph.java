@@ -110,23 +110,49 @@ public class Graph <T extends Comparable<T>>{
         return curr.vertexObject;
     }
      
+      public T removeFirstVertex(){
+        if (size == 0) return null;
+     else {
+         Vertex<T,Integer> temp = head;
+         head = head.nextVertex;
+         size--;
+        
+         return temp.vertexObject;
+     }
+        
+    }
+    
         public boolean removeVertex(T vertex){
             System.out.println("vertex index: " + getIndex(vertex));
-            
-         Vertex<T,Integer> current = head;
+          
+            if(getIndex(vertex)==0) removeFirstVertex();
          
+            else{
+            Vertex<T,Integer> current = head;
          for(int i=0; i < getIndex(vertex)-1; i++){
-             current = current.nextVertex;
-             System.out.println("removed vertex: " + current.nextVertex.vertexObject);
+             current = current.nextVertex;}
              
-             Vertex<T,Integer> temp = current.nextVertex;
-             current.nextVertex = temp.nextVertex;
-             size--;
-             
-         }
-            
-         
+            Vertex<T,Integer> temp = current.nextVertex;
+            current.nextVertex = temp.nextVertex;
+            size--;
+            }
          return true;
     }
+        
+        public void BFS(T vertex){
+            
+            Vertex <T,Integer> current = head;
+            
+            for(int i=0; i < size; i++){
+                System.out.println(getVertex(i));
+                
+                if(hasEdge(vertex,getVertex(i)))
+                    removeVertex(getVertex(i));
+                
+                else
+                
+            }
+        
+        }
 
 }
