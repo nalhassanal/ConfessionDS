@@ -139,20 +139,21 @@ public class Graph <T extends Comparable<T>>{
          return true;
     }
         
-        public void BFS(T vertex){
-            
-            Vertex <T,Integer> current = head;
+       public void BFS(T vertex){
             
             for(int i=0; i < size; i++){
-                System.out.println(getVertex(i));
                 
-                if(hasEdge(vertex,getVertex(i)))
+                if(hasEdge(vertex,getVertex(i))){
+                    System.out.println(getVertex(i));
+                    removeEdge(vertex,getVertex(i));
                     removeVertex(getVertex(i));
+                    
+                }
                 
-                else
-                
+                else System.out.println(vertex + " dont have any edges");
             }
         
         }
+
 
 }
