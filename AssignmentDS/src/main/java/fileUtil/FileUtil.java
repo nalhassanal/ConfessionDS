@@ -141,23 +141,33 @@ public class FileUtil {
         try(FileReader fr = new FileReader(file)){
             br = new BufferedReader(fr);
             String line;
+            int IDcounter = 0, counter = 0;
             while ((line = br.readLine()) != null){
                 if (line.contains("}"))
                     continue;
                 String [] data = line.split("=");
-                String key, value;
-                if (data[0].startsWith("{"))
+                String key, value="";
+                if (data[0].startsWith("{")){
                     key = data[0].trim().replace("{", "");
-                else
-                    key = "";
-                if (data.length <=1){
-                    value = "\n";
+                    IDcounter = counter;
                 }
                 else
-                    value = data[1].trim();
+                    key = "";
+                if (IDcounter >= counter) {
+                    System.out.print(counter + " " );
+                    System.out.print(data.length <= 2);
+                    System.out.println();
+                    if (data.length <= 2) {
+                        value += "\n" + data[0].trim();
+                        System.out.println(counter + " here?"); // TODO: ISSUE
+                    } else
+                        value += data[1].trim();
+                }
+                System.out.println(IDcounter+ " sini " +value);
 
                 if (!key.equals("") && !value.equals(""))
                     map.put(key, value);
+                counter += 1;
             }
         }catch (IOException e){e.printStackTrace();}
         finally {
