@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Reply extends confession{
-    private final Scanner input = new Scanner(System.in);
-    private final FileUtil fileUtil = new FileUtil();
+    Scanner input = new Scanner(System.in);
+    FileUtil fileUtil = new FileUtil();
     
     
     public void createReplyConfession(String rootID){
@@ -55,7 +55,7 @@ public class Reply extends confession{
     public boolean addReplyToFile(String rootID, String replyID, confessionPair replies){
         HashMap<String, String> map = new HashMap<>();
         map.put(rootID, replyID);
-        return fileUtil.addToFile(map, replies.getDate(),"reply.txt");
+        return fileUtil.addToFile(map, replies.getDate(),"reply.txt",true);
     }
     
     public void successfulReplyPostDisplay(confessionPair content){
