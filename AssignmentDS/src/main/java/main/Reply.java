@@ -1,6 +1,7 @@
 
 package main;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import fileUtil.FileUtil;
 import java.util.HashMap;
@@ -10,24 +11,15 @@ public class Reply extends confession{
     private final Scanner input = new Scanner(System.in);
     private final FileUtil fileUtil = new FileUtil();
     
-    public Reply() {
-    }
     
-    public void createReply(){
-        createReplyConfession();
-        
-        
-        
-    }
-
-    public void createReplyConfession(String replyRootID){
+    public void createReplyConfession(String rootID){
         System.out.println("\n============================================================"); // 60 = signs
         System.out.println(">> Please enter your reply confession content.");
         System.out.println(">> Insert \"-1\" to submit your reply confession.");
         System.out.println("------------------------------------------------------------"); // 60 - signs
         System.out.println("Reply confession content:");
         StringBuilder confessionContent = new StringBuilder();
-        String confessionID;
+        String replyID;
         while (true){
             String insert = input.nextLine();
             if (insert.equals("-1")){
@@ -39,15 +31,25 @@ public class Reply extends confession{
         System.out.println("============================================================"); // 60 = signs
         String temp = IDIncrement();
         int idNum = Integer.parseInt(temp.substring(2));
-        confessionID = String.format("DS%05d", idNum);
-        confessionPair replies = new confessionPair(rootID, confessionID, replies);
-        if(addReplyToFile(replyRootID, confessionID, replies)){
-            successfulPostDisplay(confessionID);
+
+        replyID = String.format("DS%05d", idNum);
+        confessionPair replies = new confessionPair(rootID, replyID);
+        
+        if(addReplyToFile(rootID, replyID, replies)){
+            successfulReplyPostDisplay(replies);
         }
         else {
             unSuccessfulPostDisplay();
         }
     }
+    
+//    public static void multi(){
+//        Multimap<String, String> map = ArrayListMultimap.create();
+//        map.put("DS00001", "DS00004");
+//        map.put("DS00001", "DS00005");
+//        
+//        
+//    }
 
     
     public boolean addReplyToFile(String rootID, String replyID, confessionPair replies){
@@ -58,7 +60,7 @@ public class Reply extends confession{
     
     public void successfulReplyPostDisplay(confessionPair content){
         System.out.println("============================================================"); // 60 = signs
-        System.out.println(">> Submitted at "+content.getDate() + ".");
+        System.out.println(">> Submitted at " + content.getDate() + ".");
         System.out.println(">> Reply confession post ID: " + content.getId() + ".");
         System.out.println(">> Your confession will be published soon.");
         System.out.println("============================================================"); // 60 = signs
