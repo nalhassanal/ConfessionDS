@@ -88,7 +88,7 @@ public class FileUtil {
     }
 
     // used for confessions
-    public boolean addToFile(HashMap<String, String> map,String date, String path){
+    public boolean addToFile(HashMap<String, String> map,String date, String path ,boolean reply){
         BufferedWriter bw = null;
         boolean success = false;
         if(!path.contains(".txt"))
@@ -96,12 +96,17 @@ public class FileUtil {
 
         String key = "";
 
+        
         // to make sure each id is unique
         for(String keys : map.keySet()){
-            if (hasDuplicateKeys(keys))
-                return false;
+            if(!reply){
+                if (hasDuplicateKeys(keys))
+                    return false;
+            }
             key = keys;
         }
+        
+        
         String filepath = ".\\dataFiles\\" + path;
         File file = new File(filepath);
         if (!file.exists()) {
@@ -112,7 +117,10 @@ public class FileUtil {
             }
         }
         HashMap<String, String> mapToStore = new HashMap<>();
-        mapToStore.put(key,key+".txt");
+        if(reply)
+            mapToStore.put(map.get(key), key);
+        else
+            mapToStore.put(key,key+".txt");
 
         // prioritize creating the fileWriter object first, if it fails catch IOException
         // if successful continue with try body

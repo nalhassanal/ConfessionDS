@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class confession {
     private final FileUtil fileUtil = new FileUtil();
     private final Scanner input = new Scanner(System.in);
-    private final Reply reply = new Reply();
 
     public confession(){
 
@@ -30,7 +29,7 @@ public class confession {
                 System.out.println("------------------------------------------------------------"); // 60 - signs
                 System.out.println(">> Confession post ID exists!");
                 System.out.println("============================================================"); // 60 = signs
-                reply.createReplyConfession(replyID);
+                createReplyConfession(replyID);
             }
         }
     }
@@ -94,7 +93,52 @@ public class confession {
     public boolean addContentToFile(String contentID, String contentSentence, confessionPair content){
         HashMap<String, String> map = new HashMap<>();
         map.put(contentID, contentSentence);
-        return fileUtil.addToFile(map, content.getDate(),"confession.txt") && fileUtil.addContentToFile(map);
+        return fileUtil.addToFile(map, content.getDate(),"confession.txt",false) && fileUtil.addContentToFile(map);
     }
 
+    public void createReplyConfession(String rootID){
+        System.out.println("\n============================================================"); // 60 = signs
+        System.out.println(">> Please enter your reply confession content.");
+        System.out.println(">> Insert \"-1\" to submit your reply confession.");
+        System.out.println("------------------------------------------------------------"); // 60 - signs
+        System.out.println("Reply confession content:");
+        StringBuilder confessionContent = new StringBuilder();
+        while (true){
+            String insert = input.nextLine();
+            if (insert.equals("-1")){
+                break;
+            }
+            confessionContent.append(insert).append("\n");
+        }
+
+        System.out.println("============================================================"); // 60 = signs
+        String temp = IDIncrement();
+        int idNum = Integer.parseInt(temp.substring(2));
+
+        String replyID = String.format("DS%05d", idNum);
+        confessionPair replies = new confessionPair(replyID, rootID);
+        confessionPair replyContent = new confessionPair(replyID, confessionContent.toString());
+        
+        if(addReplyToFile(replyID, rootID, replies)){
+            successfulReplyPostDisplay(replies);
+            addContentToFile(replyID, confessionContent.toString(), replyContent);
+        }
+        else {
+            unSuccessfulPostDisplay();
+        }
+    }
+    
+     public boolean addReplyToFile(String rootID, String replyID, confessionPair replies){
+        HashMap<String, String> map = new HashMap<>();
+        map.put(rootID, replyID);
+        return fileUtil.addToFile(map, replies.getDate(),"reply.txt", true);
+    }
+    
+    public void successfulReplyPostDisplay(confessionPair content){
+        System.out.println("============================================================"); // 60 = signs
+        System.out.println(">> Submitted at " + content.getDate() + ".");
+        System.out.println(">> Reply confession post ID: " + content.getId() + ".");
+        System.out.println(">> Your confession will be published soon.");
+        System.out.println("============================================================"); // 60 = signs
+    }
 }
