@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class confession {
     private final FileUtil fileUtil = new FileUtil();
     private final Scanner input = new Scanner(System.in);
-    private final Reply reply = new Reply();
+//    private final Reply reply = new Reply();
 
     public confession(){
 
@@ -26,11 +26,12 @@ public class confession {
         if (replyID.isBlank())
             createConfession();
         else{
+//            System.out.println(checkForKey(replyID));
             if (checkForKey(replyID)) {
                 System.out.println("------------------------------------------------------------"); // 60 - signs
                 System.out.println(">> Confession post ID exists!");
                 System.out.println("============================================================"); // 60 = signs
-                reply.createReplyConfession(replyID);
+//                reply.createReplyConfession(replyID);
             }
         }
     }

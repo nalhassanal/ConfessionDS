@@ -17,8 +17,43 @@ public class testLoadGraph {
 //            System.out.println(count+ " "+element);
 //            count++;
 //        }
-        loadGraph(list);
+//        loadGraph(list);
 //        confessionPair[]
+        readList(list);
+    }
+
+    public static void readList(ArrayList<String> ls){
+
+        ArrayList<String> key = new ArrayList<>(), content = new ArrayList<>(), date = new ArrayList<>();
+        String [] data;
+        for (String element : ls){
+            data = element.split("=");
+            key.add(data[0].replace("{","").trim()); // id
+            content.add(data[1].replace("}","").trim()); // nama file
+            date.add(data[2].trim()); // date
+        }
+        readFile(content.get(5));
+    }
+
+    public static void readFile(String path){
+        String filepath = ".\\dataFiles\\contentFiles\\" + path;
+        File file = new File(filepath);
+        BufferedReader br = null;
+        String line;
+        try(FileReader fr = new FileReader(file)){
+            br = new BufferedReader(fr);
+            while ((line = br.readLine()) != null){
+                System.out.println(line);
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }finally {
+            if (br != null)
+                try {
+                    br.close();
+                }catch (IOException ex){ex.printStackTrace();}
+        }
+
     }
 
     public static void loadGraph(ArrayList<String> ls){
@@ -106,6 +141,8 @@ public class testLoadGraph {
             br = new BufferedReader(fr);
             String line;
             while ((line = br.readLine()) != null){
+                if (line.isBlank())
+                    continue;
                 ls.add(line);
             }
         }catch (IOException ex){ex.printStackTrace();}
@@ -116,6 +153,7 @@ public class testLoadGraph {
                 }catch (IOException ex){ex.printStackTrace();}
             }
         }
+
         return ls;
     }
 }
