@@ -4,7 +4,7 @@ import java.util.Date;
 public class confessionPair implements Comparable<confessionPair> {
     private String id;
     private String content;
-    private final String date;
+    private String date;
     private final Date currentDate;
 
     public confessionPair(){
@@ -23,6 +23,10 @@ public class confessionPair implements Comparable<confessionPair> {
     }
 
     public String getDate(){return date;}
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getId() {
         return id;

@@ -95,7 +95,7 @@ public class confession {
     public boolean addContentToFile(String contentID, String contentSentence, confessionPair content){
         HashMap<String, String> map = new HashMap<>();
         map.put(contentID, contentSentence);
-        return fileUtil.addToFile(map, content.getDate(),"confession.txt");
+        return fileUtil.addToFile(map, content.getDate(),"confession.txt") && fileUtil.addContentToFile(map);
     }
 
 }

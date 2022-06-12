@@ -9,7 +9,6 @@ import java.util.HashMap;
 public class FileUtil {
 
     // used to store reply list
-    // maybe buat like pass in "reply.txt" as argument untuk path tu so that reply ada satu text file
     public boolean addToFile(Multimap<String, String> map1, String path){
         BufferedWriter bw = null;
 
@@ -49,6 +48,45 @@ public class FileUtil {
         return success;
     }
 
+    public boolean addContentToFile(HashMap<String, String> map){
+        boolean success = false;
+        BufferedWriter bw = null;
+        String path = "";
+        for(String keys : map.keySet()){
+            path = keys;
+        }
+        if (path.isBlank())
+            return false;
+
+        String filepath = ".\\dataFiles\\contentFiles\\" + path+ ".txt";
+        File file = new File(filepath);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        try(FileWriter fw = new FileWriter(file)){
+            bw = new BufferedWriter(fw);
+            bw.write(map.get(path));
+            bw.flush();
+            success = true;
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+        finally {
+            // always close the writer object
+            if (bw != null)
+                try {
+                    bw.close();
+                } catch (IOException ex){ex.printStackTrace();}
+        }
+
+        return success;
+    }
+
     // used for confessions
     public boolean addToFile(HashMap<String, String> map,String date, String path){
         BufferedWriter bw = null;
@@ -56,10 +94,13 @@ public class FileUtil {
         if(!path.contains(".txt"))
             return false;
 
+        String key = "";
+
         // to make sure each id is unique
         for(String keys : map.keySet()){
             if (hasDuplicateKeys(keys))
                 return false;
+            key = keys;
         }
         String filepath = ".\\dataFiles\\" + path;
         File file = new File(filepath);
@@ -70,13 +111,15 @@ public class FileUtil {
                 e.printStackTrace();
             }
         }
+        HashMap<String, String> mapToStore = new HashMap<>();
+        mapToStore.put(key,key+".txt");
 
         // prioritize creating the fileWriter object first, if it fails catch IOException
         // if successful continue with try body
         try(FileWriter fw = new FileWriter(file, true)){
             bw = new BufferedWriter(fw); // creates a buffered writer object
             bw.newLine(); // adds a new line after for readability
-            bw.write(map+ "=" + date + System.lineSeparator()); // writes the content of the given map object
+            bw.write(mapToStore+ "=" + date + System.lineSeparator()); // writes the content of the given map object
             bw.flush(); // flush the output stream
             success = true;
         } catch (IOException ex){
@@ -131,7 +174,6 @@ public class FileUtil {
     }
 
     // used to store confessions
-    // returns all id, content in one hashmap
     public HashMap<String, String> mapFromFile(){
         HashMap<String, String> map = new HashMap<>();
         String filepath = ".\\dataFiles\\confession.txt";
@@ -141,33 +183,16 @@ public class FileUtil {
         try(FileReader fr = new FileReader(file)){
             br = new BufferedReader(fr);
             String line;
-            int IDcounter = 0, counter = 0;
             while ((line = br.readLine()) != null){
-                if (line.contains("}"))
+                if (line.isBlank())
                     continue;
                 String [] data = line.split("=");
-                String key, value="";
-                if (data[0].startsWith("{")){
-                    key = data[0].trim().replace("{", "");
-                    IDcounter = counter;
-                }
-                else
-                    key = "";
-                if (IDcounter >= counter) {
-                    System.out.print(counter + " " );
-                    System.out.print(data.length <= 2);
-                    System.out.println();
-                    if (data.length <= 2) {
-                        value += "\n" + data[0].trim();
-                        System.out.println(counter + " here?"); // TODO: ISSUE
-                    } else
-                        value += data[1].trim();
-                }
-                System.out.println(IDcounter+ " sini " +value);
+                String key, value;
+                key = data[0].replace("{", "");
+                value = data[1].replace("}", "");
 
                 if (!key.equals("") && !value.equals(""))
                     map.put(key, value);
-                counter += 1;
             }
         }catch (IOException e){e.printStackTrace();}
         finally {

@@ -19,7 +19,7 @@ public class Reply extends confession{
         
         
     }
-    
+
     public void createReplyConfession(String replyRootID){
         System.out.println("\n============================================================"); // 60 = signs
         System.out.println(">> Please enter your reply confession content.");
@@ -40,7 +40,7 @@ public class Reply extends confession{
         String temp = IDIncrement();
         int idNum = Integer.parseInt(temp.substring(2));
         confessionID = String.format("DS%05d", idNum);
-        confessionPair replies = new confessionPair(rootID, confessionID, replies); 
+        confessionPair replies = new confessionPair(rootID, confessionID, replies);
         if(addReplyToFile(replyRootID, confessionID, replies)){
             successfulPostDisplay(confessionID);
         }
@@ -48,6 +48,7 @@ public class Reply extends confession{
             unSuccessfulPostDisplay();
         }
     }
+
     
     public boolean addReplyToFile(String rootID, String replyID, confessionPair replies){
         HashMap<String, String> map = new HashMap<>();
