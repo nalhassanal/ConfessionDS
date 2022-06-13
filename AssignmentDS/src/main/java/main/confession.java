@@ -23,7 +23,9 @@ public class confession {
         System.out.print("Reply confession post ID: ");
         String replyID = input.nextLine();
         if (replyID.isBlank())
-            createConfession();
+            // method queue
+            createConfession(); // return queue
+
         else{
             if (checkForKey(replyID)) {
                 System.out.println("------------------------------------------------------------"); // 60 - signs
@@ -59,6 +61,7 @@ public class confession {
         int idNum = Integer.parseInt(temp.substring(2));
         confessionID = String.format("DS%05d", idNum);
         confessionPair confess = new confessionPair(confessionID, confessionContent.toString());
+        // queue
         if(addContentToFile(confessionID, confessionContent.toString(), confess)){
             successfulPostDisplay(confess);
         }
