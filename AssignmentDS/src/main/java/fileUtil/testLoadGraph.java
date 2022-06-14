@@ -57,12 +57,6 @@ public class testLoadGraph {
     }
 
     public static void loadGraph(ArrayList<String> ls){
-        // TODO: find a way to load the data from the ls to a graph
-        // steps 1: split the data first with some logic to maintain the new lines
-        // somehow pass in the confession timestamp
-        // use confessionPair maybe but maybe with set time option idk
-        // steps 2: figure out how to use the graph ds for storing replies?
-        // TODO: use queue
         Queue<String> q = new LinkedList<String>(ls);
         String id = "";
         ArrayList<String> content = new ArrayList<>();
@@ -116,9 +110,6 @@ public class testLoadGraph {
             System.out.println(sb);
             if (count > 3)
                 break;
-
-            // TODO: find way to get individual content as a big string
-            // TODO: find way so that dont have to reset sb every loop
 
 //            if (!line.isBlank())
 //                System.out.println("here");
