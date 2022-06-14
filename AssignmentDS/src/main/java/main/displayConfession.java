@@ -13,14 +13,18 @@ import java.util.Scanner;
 public class displayConfession {
     private final Scanner input = new Scanner(System.in);
     private final SQLutil util = new SQLutil();
-    private SQLconnect connector = new SQLconnect();
-    private Connection con;
+    private final Connection con;
 
     public displayConfession(){
+        SQLconnect connector = new SQLconnect();
         con = connector.connector();
     }
 
     public void start(String startID){
+        if (checkLatest(startID)){
+            System.out.println("Reached limit for confessions posts");
+            return;
+        }
         String replyTo = getOriginID(startID);
         boolean hasReply = true;
         if (replyTo == null) {
@@ -180,6 +184,12 @@ public class displayConfession {
             IDs.add(String.format("DS%05d", element));
         }
         return IDs;
+    }
+
+    public boolean checkLatest(String id){
+        int latestIDNum = util.getID(con);
+        int idNum = Integer.parseInt(id.substring(2));
+        return idNum > latestIDNum;
     }
 
     public void displayOptions(String startID, boolean hasReply){
