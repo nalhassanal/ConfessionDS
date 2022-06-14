@@ -204,4 +204,24 @@ public class displayConfession {
         System.out.println(">> \"Q\" - quit viewing post");
         System.out.println("------------------------------------------------------------"); // 60 - signs
     }
+    
+    public void displayIDAvailable(){
+        ArrayList<confessionPair> ls = util.readFromTable(con);
+        ArrayList<String> keys = new ArrayList<>();
+        for (confessionPair element: ls){
+            keys.add(element.getId());
+        }
+        for(String key : keys){
+            System.out.print(key + "  ");
+        }
+    }
+    
+    public boolean hasID(String ID){
+        ArrayList<confessionPair> ls = util.readFromTable(con);
+        ArrayList<String> keys = new ArrayList<>();
+        for (confessionPair element: ls){
+            keys.add(element.getId());
+        }
+        return keys.contains(ID);
+    }
 }

@@ -52,10 +52,18 @@ public class Main {
 
     public static void view(){
         displayConfession disp = new displayConfession();
-        System.out.println("============================================================"); // 60 = signs
+        System.out.println("============================================================");
+        System.out.println("Available Confession ID :");
+        disp.displayIDAvailable();
+        System.out.println("\n============================================================"); // 60 = signs
         System.out.println(">> Enter the post ID that you want to see");
         String startingID = input.nextLine();
-        disp.start(startingID);
+        if(disp.hasID(startingID)==true){
+            disp.start(startingID);
+        }else{
+            System.out.println("\nSorry...The ID you Enter Is Not Exists. Please Only Enter The Available Id.");
+            view();
+        }
     }
 
     public static void search(){
