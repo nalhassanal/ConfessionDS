@@ -64,5 +64,5 @@ public class Reply extends confession{
         System.out.println(">> Reply confession post ID: " + content.getId() + ".");
         System.out.println(">> Your confession will be published soon.");
         System.out.println("============================================================"); // 60 = signs
-    }
+        }
     }
