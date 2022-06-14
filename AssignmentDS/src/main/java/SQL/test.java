@@ -1,15 +1,23 @@
 package SQL;
 
+import main.confessionPair;
+
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         SQLconnect Conn = new SQLconnect();
         Connection con = Conn.connector();
-        if ( con != null){
-            System.out.println("yessir");
+        SQLutil util = new SQLutil();
+        ArrayList<confessionPair> ls = null;
+        if (con != null){
+//            util.readReply(con);
+            ls = util.readFromTable(con);
+//            util.readQueue(con);
         }
-        else
-            System.out.println("error");
+        System.out.println(ls.size());
+
     }
 }

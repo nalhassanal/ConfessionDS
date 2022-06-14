@@ -4,10 +4,12 @@ package main;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import fileUtil.FileUtil;
+import withTxt.txtConf;
+
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class Reply extends confession{
+public class Reply extends txtConf {
     Scanner input = new Scanner(System.in);
     FileUtil fileUtil = new FileUtil();
     
@@ -64,5 +66,5 @@ public class Reply extends confession{
         System.out.println(">> Reply confession post ID: " + content.getId() + ".");
         System.out.println(">> Your confession will be published soon.");
         System.out.println("============================================================"); // 60 = signs
-        }
+    }
     }
