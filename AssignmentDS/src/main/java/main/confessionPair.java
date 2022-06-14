@@ -5,7 +5,7 @@ public class confessionPair implements Comparable<confessionPair> {
     private String id;
     private String content;
     private String date;
-    private final Date currentDate;
+    private Date currentDate;
 
     public confessionPair(){
         id = null;
@@ -30,6 +30,15 @@ public class confessionPair implements Comparable<confessionPair> {
     }
 
     public Date getCurrentDate(){return currentDate;}
+
+    public void setCurrentDate(Date date){
+        this.currentDate = date;
+    }
+
+    public void setDate(Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+        this.date = dateFormat.format(date);
+    }
 
     public String getDate(){return date;}
 
@@ -56,7 +65,7 @@ public class confessionPair implements Comparable<confessionPair> {
     @Override
     public String toString() {
         int idNum = Integer.parseInt(id.substring(2));
-        return String.format("Confession id : DS%05d \n %s\nDate submitted %s", idNum, content, date);
+        return String.format("#DS%05d \n[%s]\n\n%s", idNum, date, content);
     }
 
     @Override

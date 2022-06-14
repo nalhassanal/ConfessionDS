@@ -1,63 +1,197 @@
 package main;
-import fileUtil.*;
+import SQL.SQLconnect;
+import SQL.SQLutil;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
-import dataStructure.*;
-
 public class displayConfession {
-    private static final confession conf = new confession();
-    private static final FileUtil fileUtil = new FileUtil();
-    private static final Scanner input = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
+    private final SQLutil util = new SQLutil();
+    private SQLconnect connector = new SQLconnect();
+    private Connection con;
 
-    public static void main(String[] args) {
-        displayChoices();
+    public displayConfession(){
+        con = connector.connector();
     }
 
-    public static void displayChoices(){
+    public void start(String startID){
+        String replyTo = getOriginID(startID);
+        boolean hasReply = true;
+        if (replyTo == null) {
+            hasReply = false;
+        }
+        print(startID, hasReply);
+        String choice;
+        do {
+            displayOptions(startID, hasReply);
+            choice = input.nextLine();
+            switch (choice.toLowerCase()){
+                case "d":
+                    start(increment(startID));
+                    choice = "q";
+                    // travel list by recursion
+                    break;
+                case "a":
+                    start(decrement(startID));
+                    choice = "q";
+                    // travel list by recursion
+                    break;
+                case "s":
+                    if (checkReply(startID)){
+                        processReplies(getReplyID(startID));
+//                        choice = "q";
+                    }
+                    else {
+                        System.out.println("post has no posts replying to it");
+                    }
+                    break;
+                case "w":
+                    start(replyTo);
+//                    choice = "q";
+                    // this condition macam tekan exit dua kali lah
+                    // but tak bagi option nak patah balik ke conf asal
+                    break;
+            }
+        } while (!choice.equalsIgnoreCase("q"));
+    }
+
+    public void processReplies(List<String> id){
+        for (String element: id){
+            if (element == null)
+                return;
+            else
+                start(element);
+        }
+    }
+
+    public String decrement(String id){
+        int num = Integer.parseInt(id.substring(2));
+        return String.format("DS%05d", num -1);
+    }
+
+    public String increment(String id){
+        int num = Integer.parseInt(id.substring(2));
+        return String.format("DS%05d", num + 1);
+    }
+
+    public void print(String ID, boolean reply){
+        ArrayList<confessionPair> ls = util.readFromTable(con);
+        ArrayList<String> keys = new ArrayList<>();
+        for (confessionPair element: ls){
+            keys.add(element.getId());
+        }
+        int index = keys.indexOf(ID);
+        confessionPair pair = ls.get(index);
+        System.out.println("#"+pair.getId());
+        System.out.println("["+pair.getDate()+"]\n");
+        if (reply)
+            System.out.println("Reply to #"+ getOriginID(ID));
+        System.out.println(pair.getContent());
+    }
+
+    public boolean checkOrigin(String id){
+        boolean success = false;
+        int num = Integer.parseInt(id.substring(2)), retID = -1;
+        String query = "select * from reply";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                if (rs.getInt("reply") == num){
+                    retID = rs.getInt("main");
+                    success = true;
+                }
+            }
+        } catch (SQLException ex){ex.printStackTrace();}
+        return success;
+    }
+
+    public String getOriginID(String startID){
+        if (!checkOrigin(startID))
+            return null;
+        int id = Integer.parseInt(startID.substring(2)), retID = -1;
+        String query = "select * from reply";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                if (rs.getInt("reply") == id){
+                    retID = rs.getInt("main");
+                }
+            }
+        } catch (SQLException ex){ex.printStackTrace();}
+        if (retID == -1)
+            return null;
+        return String.format("DS%05d", retID);
+    }
+
+    public boolean checkReply(String id){
+        boolean success = false;
+        int num = Integer.parseInt(id.substring(2)), retID = -1;
+        String query = "select * from reply";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                if (rs.getInt("main") == num) {
+                    retID = rs.getInt("reply");
+                    success = true;
+                }
+            }
+        } catch (SQLException ex){ex.printStackTrace();}
+        return success;
+    }
+
+    public ArrayList<String> getReplyID(String id){
+        if (!checkReply(id))
+            return null;
+        int num = Integer.parseInt(id.substring(2));
+        String query = "select * from reply";
+        ArrayList<Integer> retID = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                if (rs.getInt("main") == num) {
+                    retID.add(rs.getInt("reply"));
+                }
+            }
+        } catch (SQLException ex){ex.printStackTrace();}
+
+        if (retID.isEmpty())
+            return null;
+
+        ArrayList<String> IDs = new ArrayList<>();
+        for(int element: retID){
+            IDs.add(String.format("DS%05d", element));
+        }
+        return IDs;
+    }
+
+    public void displayOptions(String startID, boolean hasReply){
+        String reply = getOriginID(startID);// maybe method to check for replies from startID
         System.out.println("============================================================"); // 60 = signs
-        ArrayList<String> ls = listOptions();
-
-//        ArrayList<String> key = new ArrayList<>(), content = new ArrayList<>();
-//        for(int i= 0; i<ls.size(); i++){
-//            if (i%2 == 0)
-//                key.add(ls.get(i));
-//            else
-//                content.add(ls.get(i));
-//        }
-//        System.out.println("We have: " + key.size() + " confessions.");
-//        System.out.print("All available ID: " );
-//        for (int i = 0; i<key.size(); i++) {
-//            if (i > 0 && i%10 ==0)
-//                System.out.print("\n\t\t\t\t  ");
-//            System.out.print(key.get(i) + " ");
-//        }
-//        System.out.println("============================================================"); // 60 = signs
-//        System.out.println("Please Enter The Id Confession You Want To See : ");
-//        String inputID = input.nextLine();
-//        System.out.println(content.get(key.indexOf(inputID)));
-
-    }
-
-    public static ArrayList<String> listOptions(){
-        HashMap<String, String> map = fileUtil.mapFromFile();
-//        System.out.println(map);
-        ArrayList<String> keys = new ArrayList<>(map.keySet());
-        Collections.sort(keys);
-        ArrayList<String> ls = new ArrayList<>();
-//        for(String key: keys){
-//            ls.add(key);
-//            ls.add(map.get(key));
-////            System.out.println(key + " " + map.get(key));
-//        }
-
-        return ls;
-    }
-
-    public static void readFile(){
-
+        System.out.println(">> Options:");
+        System.out.println(">> \"D\" - view next post");
+        System.out.println(">> \"A\" - view previous post");
+        if (hasReply)
+            System.out.printf(">> \"W\" - view #%s post\n", reply);
+        System.out.println(">> \"S\" - view posts that are replying to this post");
+        System.out.println(">> \"Q\" - quit viewing post");
+        System.out.println("------------------------------------------------------------"); // 60 - signs
     }
 }
