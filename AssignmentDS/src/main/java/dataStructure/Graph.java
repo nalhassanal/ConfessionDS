@@ -113,8 +113,8 @@ public class Graph <T extends Comparable<T>>{
       public T removeFirstVertex(){
         if (size == 0) return null;
      else {
-         Vertex<T,Integer> temp = head;
-         head = head.nextVertex;
+         Vertex<T,Integer> temp = graph.getHead();
+         graph.setHead(graph.getHead().nextVertex);
          size--;
         
          return temp.vertexObject;
@@ -122,13 +122,13 @@ public class Graph <T extends Comparable<T>>{
         
     }
     
-        public boolean removeVertex(T vertex){
+public boolean removeVertex(T vertex){
             System.out.println("vertex index: " + getIndex(vertex));
           
             if(getIndex(vertex)==0) removeFirstVertex();
          
             else{
-            Vertex<T,Integer> current = head;
+            Vertex<T,Integer> current = graph.getHead();
          for(int i=0; i < getIndex(vertex)-1; i++){
              current = current.nextVertex;}
              
@@ -150,7 +150,7 @@ public class Graph <T extends Comparable<T>>{
                     
                 }
                 
-                else System.out.println(vertex + " dont have any edges");
+                else System.out.println(vertex + " dont have any edges with " + getVertex(i) );
             }
         
         }

@@ -12,6 +12,10 @@ public class WeightedGraph <T extends Comparable<T>, N extends Comparable<N>>{
     protected Vertex<T, N> getHead(){
         return this.head;
     }
+    
+    protected void setHead(Vertex<T, N> head){
+        this.head = head;
+    }
 
     public void clear(){
         head = null;
