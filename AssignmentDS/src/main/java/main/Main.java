@@ -58,7 +58,7 @@ public class Main {
         System.out.println("\n============================================================"); // 60 = signs
         System.out.println(">> Enter the post ID that you want to see");
         String startingID = input.nextLine();
-        if(disp.hasID(startingID)==true){
+        if(disp.hasID(startingID)){
             disp.start(startingID);
         }else{
             System.out.println("\nSorry...The ID you Enter Is Not Exists. Please Only Enter The Available Id.");

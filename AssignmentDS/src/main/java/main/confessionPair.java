@@ -33,9 +33,6 @@ public class confessionPair implements Comparable<confessionPair> {
 
     public void setCurrentDate(Date date){
         this.currentDate = date;
-    }
-
-    public void setDate(Date date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a");
         this.date = dateFormat.format(date);
     }
@@ -65,7 +62,7 @@ public class confessionPair implements Comparable<confessionPair> {
     @Override
     public String toString() {
         int idNum = Integer.parseInt(id.substring(2));
-        return String.format("#DS%05d \n[%s]\n\n%s", idNum, date, content);
+        return String.format("DS%05d \n[%s]\n\n%s", idNum, date, content);
     }
 
     @Override
@@ -75,6 +72,10 @@ public class confessionPair implements Comparable<confessionPair> {
         else if (convertId(id) < convertId(o.id))
             return -1;
         return 0;
+    }
+
+    public boolean equals(confessionPair o){
+        return (getContent().equals(o.getContent()));
     }
 
     private int convertId (String id){

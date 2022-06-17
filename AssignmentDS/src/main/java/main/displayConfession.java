@@ -49,7 +49,7 @@ public class displayConfession {
                 case "s":
                     if (checkReply(startID)){
                         processReplies(getReplyID(startID));
-//                        choice = "q";
+                        choice = "q";
                     }
                     else {
                         System.out.println("post has no posts replying to it");
@@ -57,7 +57,7 @@ public class displayConfession {
                     break;
                 case "w":
                     start(replyTo);
-//                    choice = "q";
+                    choice = "q";
                     // this condition macam tekan exit dua kali lah
                     // but tak bagi option nak patah balik ke conf asal
                     break;

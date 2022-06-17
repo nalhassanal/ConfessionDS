@@ -50,6 +50,79 @@ public class SQLutil {
         }
     }
 
+    public ArrayList<String> getDate(Connection con){
+        String dateTime = "";
+        ArrayList<String> ls = new ArrayList<>();
+        Timestamp time = null;
+        Date date = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String query = "select * from confession";
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()){
+                time = rs.getTimestamp("timestamp");
+                date = new Date(time.getTime());
+                dateTime = dateFormat.format(date);
+                ls.add(dateTime);
+            }
+        } catch (SQLException ex){ex.printStackTrace();}
+
+        return ls;
+    }
+
+    public ArrayList<String> getDateTime(Connection con){
+        String dateTime = "";
+        ArrayList<String> ls = new ArrayList<>();
+        Timestamp time = null;
+        Date date = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+
+        String query = "select * from confession";
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()){
+                time = rs.getTimestamp("timestamp");
+                date = new Date(time.getTime());
+                dateTime = dateFormat.format(date);
+                ls.add(dateTime);
+            }
+        } catch (SQLException ex){ex.printStackTrace();}
+
+        return ls;
+    }
+
+    public ArrayList<String> getContents(Connection con){
+        String confession = "";
+        String query = "select * from confession";
+        PreparedStatement ps;
+        ResultSet rs;
+        ArrayList<String> contents = new ArrayList<>();
+
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()){
+                confession = rs.getString("content");
+                contents.add(confession);
+            }
+
+        } catch (SQLException ex){ex.printStackTrace();}
+
+        return contents;
+    }
+
     public ArrayList<confessionPair> readFromTable(Connection con){
         int id = 0;
         String confession = "";
@@ -73,11 +146,10 @@ public class SQLutil {
                 time = rs.getTimestamp("timestamp");
 
                 date = new Date(time.getTime());
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a");
 
                 pair.setId(confID);
                 pair.setContent(confession);
-                pair.setDate(dateFormat.format(date));
+                pair.setCurrentDate(date);
                 confessions.add(pair);
                 pair = new confessionPair();
             }
