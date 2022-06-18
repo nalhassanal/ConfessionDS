@@ -25,8 +25,5 @@ public class QueueForSpamCheck{
         addToQueue(content);
         index ++;
         // timer (condition if index sekian2...timer dia sekian2)
-        for(checkForSpam(content).{
-            
-        }
     }
 }
