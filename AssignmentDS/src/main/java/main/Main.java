@@ -22,7 +22,8 @@ public class Main {
                     search();
                     break;
             }
-        } while (!choice.equals("q"));
+        } while (!choice.equalsIgnoreCase("q"));
+        System.out.println("\nThank You For Using Us !");
     }
 
     public static void display(){
@@ -42,7 +43,7 @@ public class Main {
         confession conf = new confession();
         do {
             conf.mainDisplay(); // akan ada condition
-            System.out.println("Do you want to continue? ");
+            System.out.println("Do you want to continue? [yes/no]");
             stop = input.nextLine();
         } while (!stop.equalsIgnoreCase("no"));
         System.out.println("Thank you for using our service");

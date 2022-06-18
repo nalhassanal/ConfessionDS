@@ -20,19 +20,22 @@ public class QueueForSpamCheck{
         queue.dequeue();
     }
     
+    public void display(){
+        for(int i = 0; i < queue.getSize(); i++){
+            System.out.println(queue.getElement(i));
+        }
+    }
+    
     public void popUp(){
-        System.out.println(queue.dequeue());
+        System.out.println("Your confession has been approved !");
     }
     
     TimerTask task = new TimerTask(){
         public void run(){
             secondsPassed++;
-            if(secondsPassed <= 5){
-                System.out.print(".");
-            }else{
-                stop();
-                System.out.println("\nSuccessful !");
-            }
+            if(secondsPassed > 10){
+               stop();
+               
         }
     };
     
