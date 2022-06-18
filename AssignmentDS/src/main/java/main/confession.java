@@ -62,9 +62,9 @@ public class confession {
         int id = util.getID(con) + 1;
         confessionID = String.format("DS%05d", id);
         confessionPair confess = new confessionPair(confessionID, confessionContent.toString());
-        if (addContent(confess))
+        if (addContent(confess)){
             successfulPostDisplay(confess);
-        else
+        }else
             unSuccessfulPostDisplay();
     }
 
