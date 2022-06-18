@@ -2,9 +2,15 @@
 package main;
 
 import static spam.spamFilter.predictSpam;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class QueueForSpamCheck{
     MyQueue<confessionPair> queue = new MyQueue<>();
+    MyQueue<String> queueID = new MyQueue<>();
+    MyQueue<String> queueContent = new MyQueue<>();
+    Timer timer = new Timer();
+    int secondsPassed = 0;
     
     public void addToQueue(confessionPair content){
         queue.enqueue(content);
@@ -14,16 +20,56 @@ public class QueueForSpamCheck{
         queue.dequeue();
     }
     
-    public void checkForSpam(confessionPair content){
-        boolean spam = predictSpam(content.getContent().split(" "), true);
-        System.out.println(spam);
+    public void popUp(){
+        System.out.println(queue.dequeue());
+    }
+    
+    TimerTask task = new TimerTask(){
+        public void run(){
+            secondsPassed++;
+            if(secondsPassed <= 5){
+                System.out.print(".");
+            }else{
+                stop();
+                System.out.println("\nSuccessful !");
+            }
+        }
+    };
+    
+    public void start(){
+        timer.scheduleAtFixedRate(task,1000,1000);
+    }
+    
+    public void stop(){
+        timer.cancel();
+    }
+    
+    public boolean spamCheck(confessionPair content){
+        boolean spam = predictSpam(content.getContent().split(" ") , true);
+        if(spam){
+            return true;
+        }else
+            return false;
     }
     
     public void checkingQueue(confessionPair content){
-        int index = 0;
         // remember to add TIMER next time !
-        addToQueue(content);
-        index ++;
+        addToQueue(content); 
+        System.out.println("Checking The Content For Any Spam : ");
+        System.out.print("Please wait a moment");
+        start();
         // timer (condition if index sekian2...timer dia sekian2)
+        if(spamCheck(content)==false)
+            popUp();
+        else{
+            System.out.println("Spam detected ! Confession rejected !");
+            removeFromQueue();
+        }
+    }
+    
+    public static void main(String[] args) {
+        confessionPair pair = new confessionPair("ds00001","hayyo my name is shit");
+        QueueForSpamCheck test = new QueueForSpamCheck();
+        test.addToQueue(pair);
     }
 }
