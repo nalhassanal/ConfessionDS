@@ -24,12 +24,11 @@ public class spamFilter{
 
     public static boolean predictSpam(String [] ls, boolean verbose){
         return readAndPrepareData(ls, verbose);
-
     }
 
     public static boolean readAndPrepareData(String [] ls, boolean verbose){
         Queue<String> temp_df = new LinkedList<>();
-        String fileName = "\\Users\\Hassanal\\Java\\ConfessionDS\\AssignmentDS\\src\\main\\java\\spam\\spam.csv";
+        String fileName = ".\\dataFiles\\spam.csv";
         try{
             FileInputStream is = new FileInputStream(fileName);
             InputStreamReader isr = new InputStreamReader(is, StandardCharsets.ISO_8859_1);
@@ -132,7 +131,9 @@ public class spamFilter{
         // return true;
     }
 
-    public static boolean predictText(Map<String, Double> train_spam_bow, Map<String, Double> train_non_spam_bow, String [] ls, boolean verbose, double FRAC_SPAM_TEXT){
+    public static boolean predictText(Map<String, Double> train_spam_bow,
+                                      Map<String, Double> train_non_spam_bow, String [] ls,
+                                      boolean verbose, double FRAC_SPAM_TEXT){
         double spam_score, non_spam_score;
 
         ArrayList<String> valid_words = new ArrayList<>();
@@ -153,7 +154,6 @@ public class spamFilter{
             if(train_non_spam_bow.containsKey(word))
                 non_spam_probs.add(train_non_spam_bow.get(word));
 
-        // spam_score =
         double sum = 0.0;
         for (Double p : spam_probs){
             sum = sum + Math.log(p);
