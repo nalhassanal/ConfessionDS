@@ -10,7 +10,7 @@ body
 {
    min-height: 100vh;
    background-image: linear-gradient(#FFFBC5,#FFF16E);
-	width: 100vw;
+   width: 100vw;
 }
 header{
     width: 100vw;
@@ -61,7 +61,7 @@ header ul span
 header ul a{
     color: #101010;
 }
-header ul li a1
+header ul li .a1
 {
     padding: 10px 25px;
     background-color: #FFDD00;
@@ -70,7 +70,7 @@ header ul li a1
 	text-align: center;
 
 }
-header ul li a2
+header ul li .a2
 {
     padding: 10px 25px;
     background-color: #FFDD00;
@@ -79,16 +79,16 @@ header ul li a2
 	margin-right: 50px;
 	text-align: center;
 }
-header ul li a1:hover,
-header ul li a1.active
+header ul li .a1:hover,
+header ul li .a1.active
 {
     background: #09B5FF;
     background-size:30%;
     color: #ffffff;
 	cursor: pointer;
 }
-header ul li a2:hover,
-header ul li a2.active
+header ul li .a2:hover,
+header ul li .a2.active
 {
     background: #09B5FF;
     background-size:30%;
@@ -208,22 +208,23 @@ footer {
 	padding-bottom: 40px;
 }
 .button{
-	padding: 15px 10px;
+	padding: 15px 100px;
     background-color: #FFDD00;
     color: #797979;
     border-radius: 10px;
 	text-align: center;
 	font-size: 1.5em;
-	margin-right: auto;
+	margin-right: 100px;
 	margin-bottom: auto;
 	margin-left: auto;
-	width:450px;
 	margin-top: auto;
-	float: center;
 	
 }
-.button:hover,
-.button.active
+.nav-item{
+	margin-left: 35%;
+}
+ .button:hover,
+ .button.active
 {
     background: #09B5FF;
     background-size:30%;
