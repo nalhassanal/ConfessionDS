@@ -12,6 +12,7 @@ public class confession {
     private final FileUtil fileUtil = new FileUtil();
     private final Scanner input = new Scanner(System.in);
     private final SQLutil util = new SQLutil();
+    private final ContentQueue queue = new ContentQueue();
     private Connection con;
 
     public confession(){
@@ -62,10 +63,16 @@ public class confession {
         int id = util.getID(con) + 1;
         confessionID = String.format("DS%05d", id);
         confessionPair confess = new confessionPair(confessionID, confessionContent.toString());
-        if (addContent(confess))
-            successfulPostDisplay(confess);
-        else
+        successfulPostDisplay(confess);
+        if(!queue.mainStep(confess)){
+            queue.successfulCheckDisplay(confess);
+            addContent(confess);
+        }else
             unSuccessfulPostDisplay();
+//        if (addContent(confess)){   // sini akan ganti dengan addToQueue
+//            successfulPostDisplay(confess);
+//        }else
+//            unSuccessfulPostDisplay();
     }
 
     public void createReply(String rootID){
@@ -177,7 +184,7 @@ public class confession {
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Submitted at "+content.getDate() + ".");
         System.out.println(">> Confession post ID: " + content.getId() + ".");
-        System.out.println(">> Your confession will be published soon.");
+        System.out.println(">> Your confession will be reviewed soon.");
         System.out.println("============================================================"); // 60 = signs
     }
 
@@ -185,7 +192,7 @@ public class confession {
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Submitted at " + content.getDate() + ".");
         System.out.println(">> Reply confession post ID: " + content.getId() + ".");
-        System.out.println(">> Your confession will be published soon.");
+        System.out.println(">> Your confession will be reviewed soon.");
         System.out.println("============================================================"); // 60 = signs
     }
 }
