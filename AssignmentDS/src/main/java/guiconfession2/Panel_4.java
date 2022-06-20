@@ -48,7 +48,6 @@ public class Panel_4 extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1024, 768));
         setMinimumSize(new java.awt.Dimension(1024, 768));
 
         jPanel1.setBackground(new java.awt.Color(255, 251, 197));

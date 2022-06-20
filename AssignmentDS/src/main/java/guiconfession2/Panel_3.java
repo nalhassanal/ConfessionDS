@@ -51,7 +51,6 @@ public class Panel_3 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setEnabled(false);
-        setMaximumSize(new java.awt.Dimension(1024, 768));
         setMinimumSize(new java.awt.Dimension(1024, 768));
 
         jPanel1.setBackground(new java.awt.Color(255, 251, 197));
@@ -194,7 +193,7 @@ public class Panel_3 extends javax.swing.JFrame {
                     .addComponent(jLabel15))
                 .addGap(40, 40, 40)
                 .addComponent(jButton1)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         jPanel5.setBackground(new java.awt.Color(162, 162, 162));

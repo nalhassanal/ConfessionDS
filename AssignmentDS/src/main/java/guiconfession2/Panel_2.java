@@ -58,7 +58,6 @@ public class Panel_2 extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1024, 768));
         setMinimumSize(new java.awt.Dimension(1024, 768));
 
         jPanel1.setBackground(new java.awt.Color(255, 251, 197));
@@ -190,7 +189,7 @@ public class Panel_2 extends javax.swing.JFrame {
                 .addComponent(jLabel18)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel17)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jLabel11.setFont(new java.awt.Font("Poppins SemiBold", 0, 20)); // NOI18N
