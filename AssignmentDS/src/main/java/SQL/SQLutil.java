@@ -2,6 +2,7 @@ package SQL;
 
 import admin.User;
 import fileUtil.FileUtil;
+import main.MyQueue;
 import main.confessionPair;
 
 import java.sql.*;
@@ -307,5 +308,32 @@ public class SQLutil {
         }catch (SQLException ex){
             ex.printStackTrace();
         }
+    }
+
+    public MyQueue<confessionPair> getQueue(Connection con){
+        MyQueue<confessionPair> q = new MyQueue<>();
+        String query = "select * from QueueTable", id, content, date;
+        confessionPair pair = new confessionPair();
+        PreparedStatement ps;
+        ResultSet rs;
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                id = rs.getString("ID");
+                content = rs.getString("content");
+                date = rs.getString("time");
+                pair.setId(id);
+                pair.setContent(content);
+                pair.setDate(date);
+                q.enqueue(pair);
+                pair = new confessionPair();
+            }
+            ps.close();
+            rs.close();
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return q;
     }
 }
