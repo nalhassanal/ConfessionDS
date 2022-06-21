@@ -20,16 +20,12 @@ public class ContentQueue {
     ArrayList list = new ArrayList();
     MyQueue<String> queue = new MyQueue<>();
     SQLutil util = new SQLutil();
-
-    private Connection con;
-
+    SQLconnect Conn = new SQLconnect();
+    private Connection con = Conn.connector();
+//    Timer timer = new Timer();
     int seconds = 0;
     int time = 0;
-
-    public ContentQueue(){
-        SQLconnect Conn = new SQLconnect();
-        con = Conn.connector();
-    }
+    
     
     class resultPair{
         boolean resultSpam;
@@ -74,9 +70,7 @@ public class ContentQueue {
         TimerTask task = new TimerTask(){
         public void run(){
             seconds++;
-            System.out.println(seconds);
             if(seconds > time){
-
                 timer.cancel();
                 confession confess = new confession();
                 confess.addContent(content);
@@ -84,7 +78,7 @@ public class ContentQueue {
                 }
             }
         };
-       timer.scheduleAtFixedRate(task,1000,1000);
+       timer.scheduleAtFixedRate(task,1000,1000); 
     }
     
     public void runTaskReply(confessionPair content, int time, String rootID, String confessionID){
@@ -92,10 +86,8 @@ public class ContentQueue {
         TimerTask task = new TimerTask(){
         public void run(){
             seconds++;
-//            System.out.println(seconds);
             if(seconds > time){
-                System.out.println(seconds);
-                timer.cancel();
+                timer.cancel(); 
                 confession confess = new confession();
                 confess.addContent(content);
                 confess.addReply(rootID, confessionID);
@@ -103,8 +95,9 @@ public class ContentQueue {
                 }
             }
         };
-       timer.scheduleAtFixedRate(task,1000,1000);
+       timer.scheduleAtFixedRate(task,1000,1000); 
     }
+    
     
     public void successfulReviewed(confessionPair content){
         int time = pair.getTime();
@@ -215,11 +208,11 @@ public class ContentQueue {
         System.out.println(">> We detected that your confession might be a spam/unappropriate content.");
         System.out.println("============================================================"); // 60 = signs
     }
-
+    
     public static void main(String[] args) {
         ContentQueue queue = new ContentQueue();
-        queue.checkRepeatInQueue();
-
+        System.out.println();
+        
     }
     
     public String getID(Connection con){
@@ -242,9 +235,9 @@ public class ContentQueue {
         return id;
     }
     
-    public boolean checkRepeatInQueue(){
-        MyQueue<confessionPair> fromTable = util.getQueue(con);
-        System.out.println(fromTable.getSize());
+    public boolean checkRepeatInQueue(String content){
+        LinkedList temp1 = new LinkedList();
+        LinkedList temp2 = new LinkedList();
         return false;
     }
 }
