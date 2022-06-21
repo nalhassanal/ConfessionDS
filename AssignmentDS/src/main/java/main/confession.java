@@ -73,7 +73,7 @@ public class confession {
             queue.successfulCheckDisplay(confess);
             addContent(confess);
         }else
-            unSuccessfulPostDisplay();
+            queue.unSuccessfulPostDisplay();
 //        if (addContent(confess)){   // sini akan ganti dengan addToQueue
 //            successfulPostDisplay(confess);
 //        }else
@@ -97,10 +97,17 @@ public class confession {
         int id = util.getID(con) + 1;
         confessionID = String.format("DS%05d", id);
         confessionPair confess = new confessionPair(confessionID, confessionContent.toString());
-        if (addContent(confess) && addReply(rootID, confessionID))
-            successfulReplyPostDisplay(confess);
-        else
-            unSuccessfulPostDisplay();
+        successfulReplyPostDisplay(confess);
+        if(!queue.mainStep(confess)){
+            queue.successfulCheckDisplay(confess);
+            addContent(confess);
+            addReply(rootID, confessionID);
+        }else
+            queue.unSuccessfulPostDisplay();
+//        if (addContent(confess) && addReply(rootID, confessionID))
+//            successfulReplyPostDisplay(confess);
+//        else
+//            unSuccessfulPostDisplay();
 
     }
 
@@ -189,7 +196,7 @@ public class confession {
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Submitted at "+content.getDate() + ".");
         System.out.println(">> Confession post ID: " + content.getId() + ".");
-        System.out.println(">> Your confession will be reviewed soon.");
+        System.out.println(">> Please wait for your confession to be reviewed.");
         System.out.println("============================================================"); // 60 = signs
     }
 
@@ -197,7 +204,7 @@ public class confession {
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Submitted at " + content.getDate() + ".");
         System.out.println(">> Reply confession post ID: " + content.getId() + ".");
-        System.out.println(">> Your confession will be reviewed soon.");
+        System.out.println(">> Please wait for your reply to be reviewed.");
         System.out.println("============================================================"); // 60 = signs
     }
 }

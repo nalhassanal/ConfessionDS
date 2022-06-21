@@ -31,4 +31,8 @@ public class MyQueue<E> {
     public String toString(){
         return list.toString();
     }
+    
+    public E getQueue(int i){
+        return list.get(i);
+    }
 }
