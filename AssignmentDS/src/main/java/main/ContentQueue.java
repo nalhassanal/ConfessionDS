@@ -14,11 +14,37 @@ import java.util.TimerTask;
 import static spam.spamFilter.predictSpam;
 
 public class ContentQueue {
+    ArrayList list = new ArrayList();
     MyQueue<String> queue = new MyQueue<>();
     private Connection con;
     Timer timer = new Timer();
     int seconds = 0;
     int time = 0;
+    
+    class resultPair{
+        boolean resultSpam;
+        int time;
+
+        public resultPair() {
+        }
+        
+        public boolean isResultSpam() {
+            return resultSpam;
+        }
+
+        public void setResultSpam(boolean resultSpam) {
+            this.resultSpam = resultSpam;
+        }
+
+        public int getTime() {
+            return time;
+        }
+
+        public void setTime(int time) {
+            this.time = time;
+        }
+        
+    }
     
     public ContentQueue(){
         con = connect();
@@ -29,45 +55,85 @@ public class ContentQueue {
         return sql.connector();
     }
     
-    public void main(){
-        
-    }
-    
-    TimerTask task = new TimerTask(){
+    public void runTask(confessionPair content, int time){
+        TimerTask task = new TimerTask(){
         public void run(){
             seconds++;
             if(seconds > time){
                 stop(); 
+                confession confess = new confession();
+                confess.addContent(content);
+                }
             }
-        }
-    };
+        };
+       timer.scheduleAtFixedRate(task,1000,1000); 
+    }
     
-    public void start(){
-        timer.scheduleAtFixedRate(task,1000,1000);
+    public void runTaskReply(confessionPair content, int time, String rootID, String confessionID){
+        TimerTask task = new TimerTask(){
+        public void run(){
+            seconds++;
+            if(seconds > time){
+                stop(); 
+                confession confess = new confession();
+                confess.addContent(content);
+                confess.addReply(rootID, confessionID);
+                }
+            }
+        };
+       timer.scheduleAtFixedRate(task,1000,1000); 
     }
     
     public void stop(){
         timer.cancel();
     }
     
-    public boolean mainStep(confessionPair content){
+    public void successfulReviewed(confessionPair content){
+        resultPair pair = new resultPair();
+        int time = pair.getTime();
+        System.out.println(">> Your confession will be posted in " + time + " minutes.");
+        runTask(content, time);
+    }
+    
+    public void successfulReviewedReply(confessionPair content, String rootID, String confessionID){
+        resultPair pair = new resultPair();
+        int time = pair.getTime();
+        System.out.println(">> Your confession will be posted in " + time + " minutes.");
+        runTaskReply(content, time, rootID, confessionID);
+    }
+    
+    public boolean resultSpam(resultPair pair){
+        if(pair.isResultSpam())
+            return true;
+        else
+            return false;
+    }
+    
+    public resultPair mainStep(confessionPair content){
+        resultPair pair = new resultPair();
         addQueueSQL(content);
         addToQueue();
-        boolean result = false;
+        boolean result = true;
         if(queue.getSize() <= 5){
             time = 15;
-            result = checkSpam();  
-            System.out.println(">> Your confession will be posted in " + time + " minutes.");
+//            result = checkSpam(); 
+            result = false;
+            pair.setResultSpam(result);
+            pair.setTime(time);
         }else if(queue.getSize() <= 10){
             time = 10;
-            result = checkSpam();
-            System.out.println(">> Your confession will be posted in " + time + " minutes.");
+//            result = checkSpam();
+            result = false;
+            pair.setResultSpam(result);
+            pair.setTime(time);
         }else if(queue.getSize() > 10){
             time = 5;
-            result = checkSpam();
-            System.out.println(">> Your confession will be posted in " + time + " minutes.");
+//            result = checkSpam();
+            result = false;
+            pair.setResultSpam(result);
+            pair.setTime(time);
         }
-        return result;
+        return pair;
     }
     
     public boolean addQueueSQL(confessionPair content){
@@ -98,7 +164,21 @@ public class ContentQueue {
             rs = ps.executeQuery();
             while (rs.next()){
                 queue.enqueue(rs.getString("content"));
-//                rs.deleteRow();
+            }
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public void deleteFromQueue(){
+        String query = "select * from QueueTable";
+        PreparedStatement ps;
+        ResultSet rs;
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                queue.enqueue(rs.getString("content"));
             }
         } catch (SQLException ex){
             ex.printStackTrace();
@@ -106,7 +186,7 @@ public class ContentQueue {
     }
        
     public boolean checkSpam(){
-        boolean spam = predictSpam(queue.peek().split(" ") , false);
+        boolean spam = predictSpam(queue.peek().split(" ") , true);
         return spam;
     }
     
@@ -156,5 +236,41 @@ public class ContentQueue {
         System.out.println(queue.checkRepetition(test));
         System.out.println(queue.checkRepetition(test2));
         
+    }
+    
+//    public void delete() {
+//        String sql = "DELETE FROM QueueTable WHERE ID = ?";
+//
+//        try (Connection conn = this.connect();
+//                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//            String id = getID(conn);
+//            // set the corresponding param
+//            pstmt.setInt(1, id);
+//            // execute the delete statement
+//            pstmt.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
+    
+    public String getID(Connection con){
+        // this method gets the latest id
+        if (con.equals(null))
+            return "The queue is empty.";
+        String query = "select * from QueueTable";
+        PreparedStatement ps;
+        ResultSet rs;
+        String id = "";
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                id = rs.getString("ID");
+            }
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return id;
     }
 }

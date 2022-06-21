@@ -69,9 +69,9 @@ public class confession {
         confessionID = String.format("DS%05d", id);
         confessionPair confess = new confessionPair(confessionID, confessionContent.toString());
         successfulPostDisplay(confess);
-        if(!queue.mainStep(confess)){
+        if(!queue.resultSpam(queue.mainStep(confess))){
             queue.successfulCheckDisplay(confess);
-            addContent(confess);
+            queue.successfulReviewed(confess);
         }else
             queue.unSuccessfulPostDisplay();
 //        if (addContent(confess)){   // sini akan ganti dengan addToQueue
@@ -98,10 +98,9 @@ public class confession {
         confessionID = String.format("DS%05d", id);
         confessionPair confess = new confessionPair(confessionID, confessionContent.toString());
         successfulReplyPostDisplay(confess);
-        if(!queue.mainStep(confess)){
+        if(!queue.resultSpam(queue.mainStep(confess))){
             queue.successfulCheckDisplay(confess);
-            addContent(confess);
-            addReply(rootID, confessionID);
+            queue.successfulReviewedReply(confess, rootID, confessionID);
         }else
             queue.unSuccessfulPostDisplay();
 //        if (addContent(confess) && addReply(rootID, confessionID))
