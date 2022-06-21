@@ -56,16 +56,16 @@ public class ContentQueue {
         boolean result = false;
         if(queue.getSize() <= 5){
             time = 15;
-            start();
-            result = checkSpam();   
+            result = checkSpam();  
+            System.out.println(">> Your confession will be posted in " + time + " minutes.");
         }else if(queue.getSize() <= 10){
             time = 10;
-            start();
             result = checkSpam();
+            System.out.println(">> Your confession will be posted in " + time + " minutes.");
         }else if(queue.getSize() > 10){
             time = 5;
-            start();
             result = checkSpam();
+            System.out.println(">> Your confession will be posted in " + time + " minutes.");
         }
         return result;
     }
@@ -121,7 +121,40 @@ public class ContentQueue {
     
     public void unSuccessfulPostDisplay(){
         System.out.println("============================================================"); // 60 = signs
-        System.out.println(">> Your submission has failed");
+        System.out.println(">> Your submission has failed.");
+        System.out.println(">> We detected that your confession might be a spam/unappropriate content.");
         System.out.println("============================================================"); // 60 = signs
+    }
+    
+    public boolean checkRepetition(String content){
+        String[] temp;
+        String[] temp2;
+        int index = 0;
+        temp = content.split(" ");
+        for (String pertemp : temp){
+            for(int i = 0; i < queue.getSize(); i++){
+                temp2 = queue.getQueue(i).split(" ");
+                for(String pertemp2 : temp2){
+                    if(pertemp.equalsIgnoreCase(pertemp2)){
+                        index++;
+                    }
+                }
+                temp2 = null;
+            }
+        }
+        
+        double result = ((double)index / (double)temp.length) * 100.00;
+        
+        return result <= 50.0;
+    }
+    
+    public static void main(String[] args) {
+        ContentQueue queue = new ContentQueue();
+        
+        String test = "Hi, my name is adam. What is your name bruh!";
+        String test2 = "arghh! awat aq xleh post";
+        System.out.println(queue.checkRepetition(test));
+        System.out.println(queue.checkRepetition(test2));
+        
     }
 }
