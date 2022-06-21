@@ -13,7 +13,7 @@ public class confession {
     private final Scanner input = new Scanner(System.in);
     private final SQLutil util = new SQLutil();
     private final ContentQueue queue = new ContentQueue();
-    private Connection con;
+    private final Connection con;
 
     public confession(){
         con = connect();
@@ -25,6 +25,11 @@ public class confession {
     }
 
     public void mainDisplay(){
+        if(con == null){
+            System.out.println("Could not connect to database");
+            System.out.println("Please check connection");
+            return;
+        }
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Please enter the confession post ID that you want to reply.");
         System.out.println(">> Leave it blank if you don't want to reply to a confession post.");

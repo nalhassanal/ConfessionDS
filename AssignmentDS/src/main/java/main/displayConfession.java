@@ -21,6 +21,11 @@ public class displayConfession {
     }
 
     public void start(String startID){
+        if(con == null){
+            System.out.println("Could not connect to database");
+            System.out.println("Please check connection");
+            return;
+        }
         if (checkLatest(startID)){
             System.out.println("Reached limit for confessions posts");
             return;

@@ -10,48 +10,48 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class searchConfession {
+    private final SQLutil util;
+    private final Connection con;
+    private final Scanner input;
 
-    static SQLutil util = new SQLutil();
-    static SQLconnect connect = new SQLconnect();
-    static Connection con = connect.connector();
-    static Scanner input = new Scanner(System.in);
-    public static void main(String[] args) {
-        searchDisplay();
-//        System.out.print("> ");
-//        String searchedID = input.nextLine();
-//        System.out.println("============================================================"); // 60 = signs
-//        System.out.println();
-//        start(searchedID);
-
-        String [] queries = {"2022-06-14", "2022-06-16"}; // "2022-06-16 5:21 AM" "2022-06-14 2:23 PM", "2022-06-14" , "ds00010" , "DS00023" ,"hi"
-        for (String queriedID : queries) {
-            System.out.print("> " + queriedID);
-            System.out.println("\n============================================================"); // 60 = signs
-            System.out.println();
-            start(queriedID);
-        }
+    public searchConfession(){
+        SQLconnect connect = new SQLconnect();
+        con = connect.connector();
+        input = new Scanner(System.in);
+        util = new SQLutil();
     }
 
-    public static void start(String queriedID){
-        int SEARCH_TYPE = patternCheck(queriedID);
+    public void start(){
+        if(con == null){
+            System.out.println("Could not connect to database");
+            System.out.println("Please check connection");
+            return;
+        }
+        searchDisplay();
+        System.out.print("> ");
+        String searchedID = input.nextLine();
+        System.out.println("============================================================"); // 60 = signs
+        System.out.println();
+
+        int SEARCH_TYPE = patternCheck(searchedID);
         System.out.println("============================================================"); // 60 = signs
         switch (SEARCH_TYPE){
             case 0 :
-                anyType(queriedID);
+                anyType(searchedID);
                 break;
             case 1 :
-                IDType(queriedID);
+                IDType(searchedID);
                 break;
             case 2 :
-                DTType(queriedID);
+                DTType(searchedID);
                 break;
             case 3 :
-                dateType(queriedID);
+                dateType(searchedID);
                 break;
         }
     }
 
-    public static void dateType(String queried){
+    public void dateType(String queried){
         ArrayList<String> dates = util.getDate(con);
         System.out.println(dates);
         ArrayList<confessionPair> ls = util.readFromTable(con);
@@ -77,8 +77,11 @@ public class searchConfession {
         System.out.println(ids.size());
 
         System.out.println(">> Search results by the keywords \"" + queried + "\".");
-        if (ids.isEmpty() && content.isEmpty())
+        if (ids.isEmpty() && content.isEmpty()) {
             System.out.println(">> The search yielded no results");
+            start();
+            return;
+        }
 
         // TODO: try buat next page with this test case
         int index = 1;
@@ -101,7 +104,7 @@ public class searchConfession {
             choice = input.next();
             if ("r".equalsIgnoreCase(choice)) {
                 input.nextLine();
-                main(null);
+                start();
                 choice = "q";
             }
             else if (patternCheck(choice) == 1){
@@ -115,7 +118,7 @@ public class searchConfession {
         } while (!choice.equalsIgnoreCase("q"));
     }
 
-    public static void DTType(String queried){
+    public void DTType(String queried){
         ArrayList<String> dateTimes = util.getDateTime(con);
         ArrayList<confessionPair> ls = util.readFromTable(con);
         Queue<String> ids = new LinkedList<>();
@@ -129,8 +132,11 @@ public class searchConfession {
                     }
 
         System.out.println(">> Search results by the keywords \"" + queried + "\".");
-        if (ids.isEmpty() && content.isEmpty())
+        if (ids.isEmpty() && content.isEmpty()) {
             System.out.println(">> The search yielded no results");
+            start();
+            return;
+        }
 
         for (int i = 0; i < ids.size(); i++){
             String id = ids.poll() , confessions = content.poll();
@@ -150,7 +156,7 @@ public class searchConfession {
             choice = input.next();
             if ("r".equalsIgnoreCase(choice)) {
                 input.nextLine();
-                main(null);
+                start();
                 choice = "q";
             }
             else if (patternCheck(choice) == 1){
@@ -166,7 +172,7 @@ public class searchConfession {
         } while (!choice.equalsIgnoreCase("q"));
     }
 
-    public static void IDType(String queried) {
+    public void IDType(String queried) {
         System.out.println(">> Search results by the keywords \"" + queried + "\".");
         ArrayList<confessionPair> ls = util.readFromTable(con);
         String content;
@@ -177,6 +183,7 @@ public class searchConfession {
         }
         if (pair == null) {
             System.out.println("The search key does not exist");
+            start();
             return;
         }
         System.out.println(pair);
@@ -188,7 +195,7 @@ public class searchConfession {
             choice = input.next();
             if ("r".equalsIgnoreCase(choice)) {
                 input.nextLine();
-                main(null);
+                start();
                 choice = "q";
             }
         } while (!choice.equalsIgnoreCase("q"));
@@ -198,7 +205,7 @@ public class searchConfession {
     TODO not complete yet
         left only the next page part
      */
-    public static void anyType(String queried){
+    public void anyType(String queried){
         ArrayList<String> contents = util.getContents(con);
         ArrayList<confessionPair> ls = util.readFromTable(con);
         Queue<String> ids = new LinkedList<>();
@@ -212,8 +219,12 @@ public class searchConfession {
                     }
 
         System.out.println(">> Search results by the keywords \"" + queried + "\".");
-        if (ids.isEmpty() && content.isEmpty())
+        if (ids.isEmpty() && content.isEmpty()) {
             System.out.println(">> The search yielded no results");
+            start();
+            return;
+        }
+        HashMap<Integer, String> numIDpair = new HashMap<>();
 
         for (int i = 0; i < ids.size(); i++){
             String id = ids.poll() , confessions = content.poll();
@@ -221,9 +232,9 @@ public class searchConfession {
             if (confessions.length() > 43){
                 confessions = confessions.substring(0, 43) + "...";
             }
+            numIDpair.put(i+1, id);
             System.out.printf((i+1) + "%3s", " ");
             System.out.println(id + " \"" + confessions + "\"");
-
         }
 
         String choice;
@@ -234,7 +245,11 @@ public class searchConfession {
             choice = input.next();
             if ("r".equalsIgnoreCase(choice)) {
                 input.nextLine();
-                main(null);
+                start();
+                choice = "q";
+            }
+            else if(!choice.equalsIgnoreCase("q") && numIDpair.containsKey(Integer.valueOf(choice))){
+                IDType(numIDpair.get(Integer.valueOf(choice)));
                 choice = "q";
             }
             else if (patternCheck(choice) == 1){
@@ -249,7 +264,7 @@ public class searchConfession {
 
     }
 
-    public static int patternCheck(String text){
+    public int patternCheck(String text){
         final String dateRegex = "\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])";
         final String dateTimeRegex = "\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) ([1-9]|0[1-9]|1[0-2]):[0-5][0-9] ([AaPp][Mm])$";
         final String postIDRegex = "(DS)([0-9])([0-9])([0-9])([0-9])([0-9])$";
@@ -275,7 +290,7 @@ public class searchConfession {
             return 0;
     }
 
-    public static void searchDisplay(){
+    public void searchDisplay(){
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Searching formats and options:");
         System.out.println(">> \"YYYY-MM-DD\" - search by date");
@@ -285,7 +300,7 @@ public class searchConfession {
         System.out.println("------------------------------------------------------------"); // 60 - signs
     }
 
-    public static void displayOptions(int type){
+    public void displayOptions(int type){
         System.out.println("------------------------------------------------------------"); // 60 - signs
         if (type != 1 && type != 2)
             System.out.println(">> \"D\" - view next page");

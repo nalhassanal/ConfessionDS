@@ -23,7 +23,7 @@ public class Main {
                     break;
             }
         } while (!choice.equalsIgnoreCase("q"));
-        System.out.println("\nThank You For Using Us !");
+        System.out.println("\nThank You For Using Our Service !");
     }
 
     public static void display(){
@@ -68,11 +68,16 @@ public class Main {
     }
 
     public static void search(){
-        System.out.println("not yet done");
+        searchConfession search = new searchConfession();
+        String choice;
+        do {
+            search.start();
+            System.out.println("============================================================"); // 60 = signs
+            System.out.println(">> Do you want to continue?");
+            System.out.println(">> W - yes");
+            System.out.println(">> X - no");
+            choice = input.nextLine();
+        }while (!choice.equalsIgnoreCase("x"));
     }
-    
- 
-
-
 
 }
