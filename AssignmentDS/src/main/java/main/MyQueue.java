@@ -39,7 +39,4 @@ public class MyQueue<E> {
         return list.get(i);
     }
     
-    public boolean isEmpty(){
-        return list.isEmpty();
-    }
 }
