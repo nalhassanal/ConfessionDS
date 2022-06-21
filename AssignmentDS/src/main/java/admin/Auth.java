@@ -6,11 +6,14 @@ import SQL.SQLutil;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Auth {
     private final Scanner input = new Scanner(System.in);
     private final SQLutil util = new SQLutil();
     private Connection con;
+
     public Auth(){
         SQLconnect connect = new SQLconnect();
         con = connect.connector();
@@ -31,13 +34,13 @@ public class Auth {
                 if (login()){
                     System.out.println("Welcome");
                 }
-                else {
-                    boolean progress;
-                    do {
-                        progress = login();
-                        System.out.println(progress); // debug;
-                    } while (progress);
-                }
+//                else {
+//                    boolean progress;
+//                    do {
+//                        progress = login();
+//                        System.out.println(progress); // debug;
+//                    } while (progress);
+//                }
                 break;
 
             case "r":
@@ -75,10 +78,44 @@ public class Auth {
         }
 
         return success;
+    }
+
+    public void register(){
+        String inUserN, inUserP;
+        System.out.println("------------------------------------------------------------"); // 60 - signs
+        System.out.print(">> Enter your username: ");
+        inUserN = input.nextLine();
+        System.out.print(">> Enter your password: ");
+        inUserP = input.nextLine();
+        while (!checkPassword(inUserP)){
+            System.out.println("Your password must contain 8 or more characters ");
+            System.out.println("with numbers and at least one capital letter");
+            System.out.print(">> Enter your password: ");
+            inUserP = input.nextLine();
+        }
+
+
 
     }
 
-    public void register(){}
+    public boolean addToTable(User user){
+        boolean success = false;
+
+        return success;
+    }
+
+//    public boolean checkUsername(String username){
+//        final String regex =
+//    }
+
+    public boolean checkPassword(String password){
+        final String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
+
+        Pattern passwordPattern = Pattern.compile(regex);
+        Matcher passwordMatch = passwordPattern.matcher(password);
+
+        return passwordMatch.matches();
+    }
 
     public void authDisplay(){
         System.out.println("============================================================"); // 60 = signs
