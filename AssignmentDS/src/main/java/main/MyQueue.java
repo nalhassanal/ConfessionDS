@@ -5,7 +5,10 @@ import java.util.LinkedList;
 
 public class MyQueue<E> {
     LinkedList<E> list = new LinkedList<>();
-    
+
+    public boolean isEmpty(){
+        return list.isEmpty();
+    }
     
     public void enqueue(E o){
         list.add(o);
