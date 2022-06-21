@@ -39,14 +39,15 @@ public class Main {
     }
 
     public static void post(){
-        String stop;
+//        String stop;
         confession conf = new confession();
-        do {
-            conf.mainDisplay(); // akan ada condition
-            System.out.println("Do you want to continue? [yes/no]");
-            stop = input.nextLine();
-        } while (!stop.equalsIgnoreCase("no"));
-        System.out.println("Thank you for using our service");
+        conf.mainDisplay();
+//        do {
+//            conf.mainDisplay(); // akan ada condition
+//            System.out.println("Do you want to continue? [yes/no]");
+//            stop = input.nextLine();
+//        } while (!stop.equalsIgnoreCase("no"));
+//        System.out.println("Thank you for using our service");
         // which will break the loop
         // ex. spam filer maybe?
     }
@@ -69,15 +70,16 @@ public class Main {
 
     public static void search(){
         searchConfession search = new searchConfession();
-        String choice;
-        do {
-            search.start();
-            System.out.println("============================================================"); // 60 = signs
-            System.out.println(">> Do you want to continue?");
-            System.out.println(">> W - yes");
-            System.out.println(">> X - no");
-            choice = input.nextLine();
-        }while (!choice.equalsIgnoreCase("x"));
+        search.start();
+//        String choice;
+//        do {
+//            search.start();
+//            System.out.println("============================================================"); // 60 = signs
+//            System.out.println(">> Do you want to continue?");
+//            System.out.println(">> W - yes");
+//            System.out.println(">> X - no");
+//            choice = input.nextLine();
+//        }while (!choice.equalsIgnoreCase("x"));
     }
 
 }

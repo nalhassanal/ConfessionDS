@@ -119,6 +119,8 @@ public class displayConfession {
                     success = true;
                 }
             }
+            ps.close();
+            rs.close();
         } catch (SQLException ex){ex.printStackTrace();}
         return success;
     }
@@ -138,6 +140,8 @@ public class displayConfession {
                     retID = rs.getInt("main");
                 }
             }
+            ps.close();
+            rs.close();
         } catch (SQLException ex){ex.printStackTrace();}
         if (retID == -1)
             return null;
@@ -159,6 +163,8 @@ public class displayConfession {
                     success = true;
                 }
             }
+            ps.close();
+            rs.close();
         } catch (SQLException ex){ex.printStackTrace();}
         return success;
     }
@@ -179,6 +185,8 @@ public class displayConfession {
                     retID.add(rs.getInt("reply"));
                 }
             }
+            ps.close();
+            rs.close();
         } catch (SQLException ex){ex.printStackTrace();}
 
         if (retID.isEmpty())
@@ -216,9 +224,17 @@ public class displayConfession {
         for (confessionPair element: ls){
             keys.add(element.getId());
         }
-        for(String key : keys){
-            System.out.print(key + "  ");
+
+        for (int i = 0; i <keys.size(); i++){
+            if ( i % 5 == 0) {
+                System.out.println();
+//                continue;
+            }
+            System.out.print(keys.get(i) + " ");
         }
+//        for(String key : keys){
+//            System.out.print(key + "  ");
+//        }
     }
     
     public boolean hasID(String ID){

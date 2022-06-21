@@ -122,6 +122,7 @@ public class confession {
             ps.setInt(1, main);
             ps.setInt(2, reply);
             success = !ps.execute();
+            ps.close();
         } catch (SQLException ex){
             ex.printStackTrace();
         }
@@ -141,6 +142,7 @@ public class confession {
             ps.setString(1, pair.getContent());
             ps.setTimestamp(2, ts);
             success = !ps.execute();
+            ps.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -163,6 +165,8 @@ public class confession {
             while (rs.next()){
                 id.add(rs.getInt("ID"));
             }
+            ps.close();
+            rs.close();
         } catch (SQLException ex){
             ex.printStackTrace();
         }
