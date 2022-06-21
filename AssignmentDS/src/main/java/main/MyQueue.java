@@ -35,4 +35,8 @@ public class MyQueue<E> {
     public E getQueue(int i){
         return list.get(i);
     }
+    
+    public boolean isEmpty(){
+        return list.isEmpty();
+    }
 }

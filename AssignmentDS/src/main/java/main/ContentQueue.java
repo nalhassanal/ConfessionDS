@@ -22,9 +22,10 @@ public class ContentQueue {
     SQLutil util = new SQLutil();
     SQLconnect Conn = new SQLconnect();
     private Connection con = Conn.connector();
-    Timer timer = new Timer();
+//    Timer timer = new Timer();
     int seconds = 0;
     int time = 0;
+    
     
     class resultPair{
         boolean resultSpam;
@@ -65,11 +66,12 @@ public class ContentQueue {
     }
     
     public void runTask(confessionPair content, int time){
+        Timer timer = new Timer();
         TimerTask task = new TimerTask(){
         public void run(){
             seconds++;
             if(seconds > time){
-                stop(); 
+                timer.cancel();
                 confession confess = new confession();
                 confess.addContent(content);
                 delete(queue.getQueue(queue.getSize()-1));
@@ -80,11 +82,12 @@ public class ContentQueue {
     }
     
     public void runTaskReply(confessionPair content, int time, String rootID, String confessionID){
+        Timer timer = new Timer();
         TimerTask task = new TimerTask(){
         public void run(){
             seconds++;
             if(seconds > time){
-                stop(); 
+                timer.cancel(); 
                 confession confess = new confession();
                 confess.addContent(content);
                 confess.addReply(rootID, confessionID);
@@ -95,9 +98,6 @@ public class ContentQueue {
        timer.scheduleAtFixedRate(task,1000,1000); 
     }
     
-    public void stop(){
-        timer.cancel();
-    }
     
     public void successfulReviewed(confessionPair content){
         int time = pair.getTime();
@@ -235,8 +235,9 @@ public class ContentQueue {
         return id;
     }
     
-    public boolean checkRepeatInQueue(){
-        
+    public boolean checkRepeatInQueue(String content){
+        LinkedList temp1 = new LinkedList();
+        LinkedList temp2 = new LinkedList();
         return false;
     }
 }
