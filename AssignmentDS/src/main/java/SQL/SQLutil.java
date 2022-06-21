@@ -109,6 +109,63 @@ public class SQLutil {
         return ls;
     }
 
+    public void deleteQueueRow(Connection con, int index){
+        String updateQuery = "delete from QueueTable where idQueueTable = " + index;
+        Statement stmt;
+        try{
+            stmt = con.createStatement();
+            stmt.executeUpdate(updateQuery);
+            stmt.close();
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public LinkedList<Integer> getQueueID(Connection con){
+        LinkedList<Integer> ls = new LinkedList<>();
+        String query = "select * from QueueTable";
+        Integer id;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                id = rs.getInt("idQueueTable");
+                ls.add(id);
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return ls;
+    }
+
+
+    public LinkedList<String> getQueueContents(Connection con){
+        LinkedList<String> ls = new LinkedList<>();
+        String query = "select * from QueueTable", contents;
+
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                contents = rs.getString("content");
+                ls.add(contents);
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return ls;
+    }
+
     public ArrayList<String> getContents(Connection con){
         String confession = "";
         String query = "select * from confession";
@@ -255,5 +312,26 @@ public class SQLutil {
             return null;
         }
         return ls;
+    }
+
+
+
+    public void deleteRow(Connection con){
+        String updateQuery = "delete from adminUser where password = '123'";
+        String query = "select * from adminUser";
+        Statement stmt;
+        ResultSet rs;
+        try{
+            stmt = con.createStatement();
+            stmt.executeUpdate(updateQuery);
+            rs = stmt.executeQuery(query);
+            while (rs.next()){
+                System.out.println("Username: " + rs.getString("username") + ", Password: " + rs.getString("password"));
+            }
+            stmt.close();
+            rs.close();
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
     }
 }
