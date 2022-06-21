@@ -23,7 +23,8 @@ public class Main {
                     break;
             }
         } while (!choice.equalsIgnoreCase("q"));
-        System.out.println("\nThank You For Using Our Service !");
+        System.out.println();
+        System.out.println("Thank You For Using Our Service !");
     }
 
     public static void display(){

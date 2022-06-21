@@ -1,6 +1,7 @@
 
 package main;
 
+import SQL.SQLutil;
 import SQL.SQLconnect;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,14 +10,18 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 import static spam.spamFilter.predictSpam;
 
 public class ContentQueue {
+    resultPair pair = new resultPair();
     ArrayList list = new ArrayList();
     MyQueue<String> queue = new MyQueue<>();
-    private Connection con;
+    SQLutil util = new SQLutil();
+    SQLconnect Conn = new SQLconnect();
+    private Connection con = Conn.connector();
     Timer timer = new Timer();
     int seconds = 0;
     int time = 0;
@@ -46,13 +51,17 @@ public class ContentQueue {
         
     }
     
-    public ContentQueue(){
-        con = connect();
-    }
-    
     private Connection connect(){
         SQLconnect sql = new SQLconnect();
         return sql.connector();
+    }
+    
+    public void delete(String content){
+        LinkedList<String> contents = util.getQueueContents(con);
+        LinkedList<Integer> contentID = util.getQueueID(con);        
+        int index = contents.indexOf(content);
+        int toBeRemoved = contentID.get(index);
+        util.deleteQueueRow(con, toBeRemoved);
     }
     
     public void runTask(confessionPair content, int time){
@@ -63,6 +72,7 @@ public class ContentQueue {
                 stop(); 
                 confession confess = new confession();
                 confess.addContent(content);
+                delete(queue.getQueue(queue.getSize()-1));
                 }
             }
         };
@@ -78,6 +88,7 @@ public class ContentQueue {
                 confession confess = new confession();
                 confess.addContent(content);
                 confess.addReply(rootID, confessionID);
+                delete(queue.getQueue(queue.getSize()-1));
                 }
             }
         };
@@ -89,14 +100,12 @@ public class ContentQueue {
     }
     
     public void successfulReviewed(confessionPair content){
-        resultPair pair = new resultPair();
         int time = pair.getTime();
         System.out.println(">> Your confession will be posted in " + time + " minutes.");
         runTask(content, time);
     }
     
     public void successfulReviewedReply(confessionPair content, String rootID, String confessionID){
-        resultPair pair = new resultPair();
         int time = pair.getTime();
         System.out.println(">> Your confession will be posted in " + time + " minutes.");
         runTaskReply(content, time, rootID, confessionID);
@@ -107,6 +116,14 @@ public class ContentQueue {
             return true;
         else
             return false;
+    }
+    
+    public resultPair getPair(){
+        return this.pair;
+    }
+    
+    public void setPair(resultPair pair){
+        this.pair = pair;
     }
     
     public resultPair mainStep(confessionPair content){
@@ -133,6 +150,7 @@ public class ContentQueue {
             pair.setResultSpam(result);
             pair.setTime(time);
         }
+        this.setPair(pair);
         return pair;
     }
     
@@ -169,21 +187,6 @@ public class ContentQueue {
             ex.printStackTrace();
         }
     }
-    
-    public void deleteFromQueue(){
-        String query = "select * from QueueTable";
-        PreparedStatement ps;
-        ResultSet rs;
-        try{
-            ps = con.prepareStatement(query);
-            rs = ps.executeQuery();
-            while (rs.next()){
-                queue.enqueue(rs.getString("content"));
-            }
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
-    }
        
     public boolean checkSpam(){
         boolean spam = predictSpam(queue.peek().split(" ") , true);
@@ -206,53 +209,11 @@ public class ContentQueue {
         System.out.println("============================================================"); // 60 = signs
     }
     
-    public boolean checkRepetition(String content){
-        String[] temp;
-        String[] temp2;
-        int index = 0;
-        temp = content.split(" ");
-        for (String pertemp : temp){
-            for(int i = 0; i < queue.getSize(); i++){
-                temp2 = queue.getQueue(i).split(" ");
-                for(String pertemp2 : temp2){
-                    if(pertemp.equalsIgnoreCase(pertemp2)){
-                        index++;
-                    }
-                }
-                temp2 = null;
-            }
-        }
-        
-        double result = ((double)index / (double)temp.length) * 100.00;
-        
-        return result <= 50.0;
-    }
-    
     public static void main(String[] args) {
         ContentQueue queue = new ContentQueue();
-        
-        String test = "Hi, my name is adam. What is your name bruh!";
-        String test2 = "arghh! awat aq xleh post";
-        System.out.println(queue.checkRepetition(test));
-        System.out.println(queue.checkRepetition(test2));
+        System.out.println();
         
     }
-    
-//    public void delete() {
-//        String sql = "DELETE FROM QueueTable WHERE ID = ?";
-//
-//        try (Connection conn = this.connect();
-//                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//            String id = getID(conn);
-//            // set the corresponding param
-//            pstmt.setInt(1, id);
-//            // execute the delete statement
-//            pstmt.executeUpdate();
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
     
     public String getID(Connection con){
         // this method gets the latest id
@@ -272,5 +233,10 @@ public class ContentQueue {
             ex.printStackTrace();
         }
         return id;
+    }
+    
+    public boolean checkRepeatInQueue(){
+        
+        return false;
     }
 }
