@@ -1,6 +1,7 @@
 
 package main;
 
+import SQL.SQLutil;
 import SQL.SQLconnect;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,14 +10,18 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 import static spam.spamFilter.predictSpam;
 
 public class ContentQueue {
+    resultPair pair = new resultPair();
     ArrayList list = new ArrayList();
     MyQueue<String> queue = new MyQueue<>();
-    private Connection con;
+    SQLutil util = new SQLutil();
+    SQLconnect Conn = new SQLconnect();
+    private Connection con = Conn.connector();
     Timer timer = new Timer();
     int seconds = 0;
     int time = 0;
@@ -46,13 +51,16 @@ public class ContentQueue {
         
     }
     
-    public ContentQueue(){
-        con = connect();
-    }
-    
     private Connection connect(){
         SQLconnect sql = new SQLconnect();
         return sql.connector();
+    }
+    
+    public void delete(String content){
+        LinkedList<String> contents = util.getQueueContents(con);
+        LinkedList<Integer> contentID = util.getQueueID(con);        
+        int index = contents.indexOf(content);
+        int toBeRemoved = contentID.get(index);
     }
     
     public void runTask(confessionPair content, int time){
@@ -63,6 +71,7 @@ public class ContentQueue {
                 stop(); 
                 confession confess = new confession();
                 confess.addContent(content);
+                delete(queue.getQueue(queue.getSize()-1));
                 }
             }
         };
@@ -89,14 +98,12 @@ public class ContentQueue {
     }
     
     public void successfulReviewed(confessionPair content){
-        resultPair pair = new resultPair();
         int time = pair.getTime();
         System.out.println(">> Your confession will be posted in " + time + " minutes.");
         runTask(content, time);
     }
     
     public void successfulReviewedReply(confessionPair content, String rootID, String confessionID){
-        resultPair pair = new resultPair();
         int time = pair.getTime();
         System.out.println(">> Your confession will be posted in " + time + " minutes.");
         runTaskReply(content, time, rootID, confessionID);
@@ -109,11 +116,20 @@ public class ContentQueue {
             return false;
     }
     
+    public resultPair getPair(){
+        return this.pair;
+    }
+    
+    public void setPair(resultPair pair){
+        this.pair = pair;
+    }
+    
     public resultPair mainStep(confessionPair content){
         resultPair pair = new resultPair();
         addQueueSQL(content);
         addToQueue();
         boolean result = true;
+        System.out.println(queue.getSize());
         if(queue.getSize() <= 5){
             time = 15;
 //            result = checkSpam(); 
@@ -133,6 +149,9 @@ public class ContentQueue {
             pair.setResultSpam(result);
             pair.setTime(time);
         }
+        System.out.println(pair.isResultSpam());
+        System.out.println(pair.getTime());
+        this.setPair(pair);
         return pair;
     }
     
@@ -156,21 +175,6 @@ public class ContentQueue {
     }
     
     public void addToQueue(){
-        String query = "select * from QueueTable";
-        PreparedStatement ps;
-        ResultSet rs;
-        try{
-            ps = con.prepareStatement(query);
-            rs = ps.executeQuery();
-            while (rs.next()){
-                queue.enqueue(rs.getString("content"));
-            }
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-    
-    public void deleteFromQueue(){
         String query = "select * from QueueTable";
         PreparedStatement ps;
         ResultSet rs;
@@ -230,11 +234,7 @@ public class ContentQueue {
     
     public static void main(String[] args) {
         ContentQueue queue = new ContentQueue();
-        
-        String test = "Hi, my name is adam. What is your name bruh!";
-        String test2 = "arghh! awat aq xleh post";
-        System.out.println(queue.checkRepetition(test));
-        System.out.println(queue.checkRepetition(test2));
+        System.out.println();
         
     }
     

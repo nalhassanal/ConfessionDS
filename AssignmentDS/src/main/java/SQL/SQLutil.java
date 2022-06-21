@@ -142,7 +142,28 @@ public class SQLutil {
         }
         return ls;
     }
+    
+    public LinkedList<String> getQueueConfessionID(Connection con){
+        LinkedList<String> ls = new LinkedList<>();
+        String query = "select * from QueueTable", contents;
 
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                contents = rs.getString("ID");
+                ls.add(contents);
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return ls;
+    }
 
     public LinkedList<String> getQueueContents(Connection con){
         LinkedList<String> ls = new LinkedList<>();
