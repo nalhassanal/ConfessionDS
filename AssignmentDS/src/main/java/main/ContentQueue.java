@@ -61,6 +61,7 @@ public class ContentQueue {
         LinkedList<Integer> contentID = util.getQueueID(con);        
         int index = contents.indexOf(content);
         int toBeRemoved = contentID.get(index);
+        util.deleteQueueRow(con, toBeRemoved);
     }
     
     public void runTask(confessionPair content, int time){
@@ -87,6 +88,7 @@ public class ContentQueue {
                 confession confess = new confession();
                 confess.addContent(content);
                 confess.addReply(rootID, confessionID);
+                delete(queue.getQueue(queue.getSize()-1));
                 }
             }
         };
@@ -129,7 +131,6 @@ public class ContentQueue {
         addQueueSQL(content);
         addToQueue();
         boolean result = true;
-        System.out.println(queue.getSize());
         if(queue.getSize() <= 5){
             time = 15;
 //            result = checkSpam(); 
@@ -149,8 +150,6 @@ public class ContentQueue {
             pair.setResultSpam(result);
             pair.setTime(time);
         }
-        System.out.println(pair.isResultSpam());
-        System.out.println(pair.getTime());
         this.setPair(pair);
         return pair;
     }
@@ -210,49 +209,11 @@ public class ContentQueue {
         System.out.println("============================================================"); // 60 = signs
     }
     
-    public boolean checkRepetition(String content){
-        String[] temp;
-        String[] temp2;
-        int index = 0;
-        temp = content.split(" ");
-        for (String pertemp : temp){
-            for(int i = 0; i < queue.getSize(); i++){
-                temp2 = queue.getQueue(i).split(" ");
-                for(String pertemp2 : temp2){
-                    if(pertemp.equalsIgnoreCase(pertemp2)){
-                        index++;
-                    }
-                }
-                temp2 = null;
-            }
-        }
-        
-        double result = ((double)index / (double)temp.length) * 100.00;
-        
-        return result <= 50.0;
-    }
-    
     public static void main(String[] args) {
         ContentQueue queue = new ContentQueue();
         System.out.println();
         
     }
-    
-//    public void delete() {
-//        String sql = "DELETE FROM QueueTable WHERE ID = ?";
-//
-//        try (Connection conn = this.connect();
-//                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//            String id = getID(conn);
-//            // set the corresponding param
-//            pstmt.setInt(1, id);
-//            // execute the delete statement
-//            pstmt.executeUpdate();
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
     
     public String getID(Connection con){
         // this method gets the latest id
@@ -272,5 +233,10 @@ public class ContentQueue {
             ex.printStackTrace();
         }
         return id;
+    }
+    
+    public boolean checkRepeatInQueue(){
+        
+        return false;
     }
 }
