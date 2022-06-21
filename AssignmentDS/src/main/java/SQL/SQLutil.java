@@ -1,5 +1,6 @@
 package SQL;
 
+import admin.User;
 import fileUtil.FileUtil;
 import main.confessionPair;
 
@@ -221,5 +222,38 @@ public class SQLutil {
         } catch (SQLException ex){
             ex.printStackTrace();
         }
+    }
+
+    public ArrayList<User> getUsers(Connection con){
+        ArrayList<User> ls = new ArrayList<>();
+        User user = new User();
+        String userN, userP;
+
+        String query = "select * from adminUser";
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try{
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                userN = rs.getString("username");
+                userP = rs.getString("password");
+                user.setUsername(userN);
+                user.setPassword(userP);
+                ls.add(user);
+                user = new User();
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+
+        if (ls.isEmpty()) {
+            System.out.println("There are no existing users");
+            return null;
+        }
+        return ls;
     }
 }
