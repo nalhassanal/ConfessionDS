@@ -13,8 +13,32 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Auth {
+    private class resultPair{
+        private boolean result;
+        private User user;
+
+        public resultPair(boolean result, User user){
+            this.result = result;
+            this.user = user;
+        }
+
+        public boolean isResult() {
+            return result;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        @Override
+        public String toString(){
+            return "Result: " + result + ", User: " + user.toString();
+        }
+    }
+
     private final Scanner input = new Scanner(System.in);
     private final SQLutil util = new SQLutil();
+    private admin admin = new admin();
     private Connection con;
 
     public Auth(){
@@ -34,8 +58,12 @@ public class Auth {
         String choice = input.nextLine();
         switch (choice.toLowerCase()){
             case "l":
-                if (login()){
-                    System.out.println("Welcome");
+                resultPair res = login();
+                if (res.isResult()){
+                    System.out.println("------------------------------------------------------------"); // 60 - signs
+                    System.out.println();
+                    System.out.println("Welcome " + res.getUser().getUsername());
+                    admin.start();
                 }
 //                else {
 //                    boolean progress;
@@ -54,9 +82,10 @@ public class Auth {
         }
     }
 
-    public boolean login(){
+    public resultPair login(){
         int progress = 0;
         boolean success = false;
+        User user = new User();
         String inUserN, inUserP;
         System.out.println("------------------------------------------------------------"); // 60 - signs
         System.out.print(">> Enter your username: ");
@@ -69,6 +98,8 @@ public class Auth {
             if (element.getUsername().equals(inUserN)) {
                 if (element.getPassword().equals(inUserP)) {
                     progress = 2;
+                    user.setUsername(element.getUsername());
+                    user.setPassword(element.getPassword());
                     break;
                 }
                 else
@@ -82,12 +113,19 @@ public class Auth {
             System.out.println("Wrong password or username");
         }
 
-        return success;
+        return new resultPair(success, user);
     }
 
     public boolean register(){
-        String inUserN, inUserP;
+        String inUserN, inUserP, inUserE;
         System.out.println("------------------------------------------------------------"); // 60 - signs
+//        System.out.print(">> Enter your email address: ");
+//        inUserE = input.nextLine();
+//        while (!checkEmail(inUserE)){
+//            System.out.println("Please enter a valid email");
+//            System.out.print(">> Enter your email address: ");
+//            inUserE = input.nextLine();
+//        }
         System.out.print(">> Enter your preferred username: ");
         inUserN = input.nextLine();
         while (!checkUsername(inUserN)){
@@ -125,6 +163,14 @@ public class Auth {
 
         return success;
     }
+
+//    public boolean checkEmail(String email){
+//        final String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+//        Pattern emailPattern = Pattern.compile(regex);
+//        Matcher emailMatch = emailPattern.matcher(email);
+//
+//        return emailMatch.matches();
+//    }
 
     public boolean checkUsername(String username){
         final String regex = "[\\w&\\-_!]{4,}";

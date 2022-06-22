@@ -1,6 +1,7 @@
 package SQL;
 
 import admin.User;
+import admin.replies;
 import fileUtil.FileUtil;
 import main.MyQueue;
 import main.confessionPair;
@@ -15,8 +16,6 @@ import java.util.Scanner;
 import main.confession;
 
 public class SQLutil {
-    private SQLconnect connector = new SQLconnect();
-    private Connection con;
     public SQLutil(){}
 
     public int getID(Connection con){
@@ -41,8 +40,11 @@ public class SQLutil {
         return id;
     }
 
-    public void readReply(Connection con){
+    public ArrayList<replies> readReply(Connection con){
+        ArrayList<replies> ls = new ArrayList<>();
         int main, reply;
+        String root, to;
+        replies rep = new replies();
         String query = "select * from reply";
         PreparedStatement ps;
         ResultSet rs;
@@ -53,13 +55,20 @@ public class SQLutil {
             while (rs.next()){
                 main = rs.getInt("main");
                 reply = rs.getInt("reply");
-                System.out.println(main + "-->" + reply);
+                root = String.format("DS%05d", main);
+                to = String.format("DS%05d", reply);
+                rep.setRoot(root);
+                rep.setReply(to);
+                ls.add(rep);
+                rep = new replies();
+//                System.out.println(main + "-->" + reply);
             }
             ps.close();
             rs.close();
         } catch (SQLException ex){
             ex.printStackTrace();
         }
+        return ls;
     }
 
     public ArrayList<String> getDate(Connection con){
@@ -288,8 +297,6 @@ public class SQLutil {
         }
         return ls;
     }
-
-
 
     public void deleteRow(Connection con){
         String updateQuery = "delete from adminUser where password = '123'";

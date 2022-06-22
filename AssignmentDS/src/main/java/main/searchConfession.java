@@ -267,7 +267,7 @@ public class searchConfession {
     public int patternCheck(String text){
         final String dateRegex = "\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])";
         final String dateTimeRegex = "\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) ([1-9]|0[1-9]|1[0-2]):[0-5][0-9] ([AaPp][Mm])$";
-        final String postIDRegex = "(DS)([0-9])([0-9])([0-9])([0-9])([0-9])$";
+        final String postIDRegex = "([Dd][Ss])([0-9])([0-9])([0-9])([0-9])([0-9])$";
 
         Pattern date = Pattern.compile(dateRegex);
         Pattern dateTime = Pattern.compile(dateTimeRegex);
