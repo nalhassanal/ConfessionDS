@@ -59,19 +59,13 @@ public class Auth {
         switch (choice.toLowerCase()){
             case "l":
                 resultPair res = login();
-                if (res.isResult()){
-                    System.out.println("------------------------------------------------------------"); // 60 - signs
-                    System.out.println();
-                    System.out.println("Welcome " + res.getUser().getUsername());
-                    admin.start();
+                while (!res.isResult()){
+                    res = login();
                 }
-//                else {
-//                    boolean progress;
-//                    do {
-//                        progress = login();
-//                        System.out.println(progress); // debug;
-//                    } while (progress);
-//                }
+                System.out.println("------------------------------------------------------------"); // 60 - signs
+                System.out.println();
+                System.out.println("Welcome " + res.getUser().getUsername());
+                admin.start();
                 break;
 
             case "r":

@@ -40,17 +40,8 @@ public class Main {
     }
 
     public static void post(){
-//        String stop;
         confession conf = new confession();
         conf.mainDisplay();
-//        do {
-//            conf.mainDisplay(); // akan ada condition
-//            System.out.println("Do you want to continue? [yes/no]");
-//            stop = input.nextLine();
-//        } while (!stop.equalsIgnoreCase("no"));
-//        System.out.println("Thank you for using our service");
-        // which will break the loop
-        // ex. spam filer maybe?
     }
 
     public static void view(){

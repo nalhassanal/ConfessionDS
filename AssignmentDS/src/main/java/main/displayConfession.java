@@ -96,6 +96,7 @@ public class displayConfession {
             keys.add(element.getId());
         }
         int index = keys.indexOf(ID);
+        System.out.println(index);
         confessionPair pair = ls.get(index);
         System.out.println("#"+pair.getId());
         System.out.println("["+pair.getDate()+"]\n");
@@ -230,7 +231,7 @@ public class displayConfession {
                 System.out.println();
 //                continue;
             }
-            System.out.print(keys.get(i) + " ");
+            System.out.print(keys.get(i) + "\t\t");
         }
 //        for(String key : keys){
 //            System.out.print(key + "  ");

@@ -23,6 +23,6 @@ public class replies {
 
     @Override
     public String toString(){
-        return reply + " replies to " + root;
+        return reply + " -> " + root;
     }
 }

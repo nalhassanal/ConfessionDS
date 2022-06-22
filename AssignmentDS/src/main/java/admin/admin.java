@@ -5,10 +5,10 @@ import SQL.SQLutil;
 import main.displayConfession;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class admin {
@@ -96,11 +96,59 @@ public class admin {
         System.out.println(">> Enter the ID that you want to remove");
         query = input.nextLine();
 
-        if(checkReply(query)){
-            deleteReplyRow(query);
-            deleteRow(query);
+        if(delete(query))
+            deleteSuccessfulDisplay();
+        else
+            deleteNOTsuccessfuldisplay();
+    }
+
+    public boolean delete(String selected){
+        boolean success = false;
+        if(!checkReply(selected)){
+            System.out.println("no neighbours");
+            return deleteRow(selected);
         }
-//        deleteRow(query);
+        ArrayList<replies> ls = getNeighbour(selected);
+        LinkedList<replies> related = new LinkedList<>();
+        System.out.println(ls);
+        for(replies each: ls){
+            String reply = each.getReply();
+            if(checkReply(reply)){
+                ArrayList<replies> next = getNeighbour(reply);
+                related.addAll(next);
+            }
+        }
+        System.out.println(related);
+
+//        if (ls.isEmpty()){
+//            success = ;
+//        }
+//
+//        if(related.isEmpty()){
+//            // delete things in ls
+//            success = deleteRoots(ls);
+//        }
+//        else {
+//            // delete things in related && ls
+//            success = deleteRoots(related) && deleteRoots(ls);
+//        }
+
+        return success;
+    }
+
+    public ArrayList<replies> getNeighbour(String source){
+        ArrayList<replies> replies = util.readReply(con);
+        ArrayList<replies> ls = new ArrayList<>();
+        replies rep = new replies();
+        for (replies reply: replies){
+            if (reply.getRoot().equals(source)){
+                rep.setRoot(source);
+                rep.setReply(reply.getReply());
+                ls.add(rep);
+                rep = new replies();
+            }
+        }
+        return ls;
     }
 
     private boolean checkReply(String root){
@@ -113,43 +161,68 @@ public class admin {
         return false;
     }
 
-//    public boolean deleteReplies(String query){
-//
-//    }
+    public boolean deleteRoots(ArrayList<replies> ls){
+        boolean result = false;
+        for(replies reply: ls){
+            result = deleteRow(reply.getRoot()) && deleteRow(reply.getReply())
+                    && deleteReplyRow(reply.getRoot());
+        }
+        return result;
+    }
 
-    private void deleteReplyRow(String selected){
-        String id = selected.substring(2);
+    public boolean deleteRoots(LinkedList<replies> ls){
+        boolean result = false;
+        for(replies reply: ls){
+            result = deleteRow(reply.getRoot()) && deleteRow(reply.getReply())
+                    && deleteReplyRow(reply.getRoot());
+        }
+        return result;
+    }
+
+    private boolean deleteReplyRow(String selected){
+        int id = Integer.parseInt(selected.substring(2));
         String updateQuery = "delete from reply where main = " + id;
+        int result = 0;
+        boolean success = false;
         Statement stmt;
         try{
             stmt = con.createStatement();
-            stmt.executeUpdate(updateQuery);
+            result = stmt.executeUpdate(updateQuery);
             stmt.close();
         } catch (SQLException ex){
             ex.printStackTrace();
         }
+        if (result == 1)
+            success = true;
+        return success;
     }
 
-    private void deleteRow(String selected){
+    private boolean deleteRow(String selected){
         int id = Integer.parseInt(selected.substring(2));
-        boolean last = true;
+        boolean last = true, success = false;
 
         String updateQuery = "delete from confession where id = " + id;
         if (id < util.getID(con))
             last = false;
 
+        int result = 0;
+
         Statement stmt;
         try{
             stmt = con.createStatement();
-            stmt.executeUpdate(updateQuery);
+            result = stmt.executeUpdate(updateQuery);
             if (last) {
                 String updateCounter = "ALTER TABLE confession AUTO_INCREMENT = " + id;
-                stmt.executeUpdate(updateCounter);
+                result = stmt.executeUpdate(updateCounter);
             }
             stmt.close();
         }catch (SQLException ex){
             ex.printStackTrace();
         }
+
+        if (result == 1)
+            success = true;
+        return success;
     }
 
     public void adminDisplay(){
@@ -160,5 +233,17 @@ public class admin {
         System.out.println(">> \"W\" - View all posts");
         System.out.println(">> \"D\" - Delete posts");
         System.out.println(">> \"X\" - Exit");
+    }
+
+    public void deleteNOTsuccessfuldisplay(){
+        System.out.println("------------------------------------------------------------"); // 60 - signs
+        System.out.println(">> Deletion failed");
+        System.out.println();
+    }
+
+    public void deleteSuccessfulDisplay(){
+        System.out.println("------------------------------------------------------------"); // 60 - signs
+        System.out.println(">> Deletion successful");
+        System.out.println();
     }
 }
