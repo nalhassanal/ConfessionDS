@@ -61,7 +61,6 @@ public class SQLutil {
                 rep.setReply(to);
                 ls.add(rep);
                 rep = new replies();
-//                System.out.println(main + "-->" + reply);
             }
             ps.close();
             rs.close();
@@ -142,7 +141,7 @@ public class SQLutil {
     public LinkedList<Integer> getQueueID(Connection con){
         LinkedList<Integer> ls = new LinkedList<>();
         String query = "select * from QueueTable";
-        Integer id;
+        int id;
         PreparedStatement ps;
         ResultSet rs;
 
@@ -152,28 +151,6 @@ public class SQLutil {
             while (rs.next()){
                 id = rs.getInt("idQueueTable");
                 ls.add(id);
-            }
-            ps.close();
-            rs.close();
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
-        return ls;
-    }
-    
-    public LinkedList<String> getQueueConfessionID(Connection con){
-        LinkedList<String> ls = new LinkedList<>();
-        String query = "select * from QueueTable", contents;
-
-        PreparedStatement ps;
-        ResultSet rs;
-
-        try{
-            ps = con.prepareStatement(query);
-            rs = ps.executeQuery();
-            while (rs.next()){
-                contents = rs.getString("ID");
-                ls.add(contents);
             }
             ps.close();
             rs.close();
@@ -296,25 +273,6 @@ public class SQLutil {
             return null;
         }
         return ls;
-    }
-
-    public void deleteRow(Connection con){
-        String updateQuery = "delete from adminUser where password = '123'";
-        String query = "select * from adminUser";
-        Statement stmt;
-        ResultSet rs;
-        try{
-            stmt = con.createStatement();
-            stmt.executeUpdate(updateQuery);
-            rs = stmt.executeQuery(query);
-            while (rs.next()){
-                System.out.println("Username: " + rs.getString("username") + ", Password: " + rs.getString("password"));
-            }
-            stmt.close();
-            rs.close();
-        }catch (SQLException ex){
-            ex.printStackTrace();
-        }
     }
 
     public MyQueue<confessionPair> getQueue(Connection con){

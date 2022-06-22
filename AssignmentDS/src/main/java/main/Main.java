@@ -30,6 +30,7 @@ public class Main {
                     System.out.println("------------------------------------------------------------"); // 60 - signs
                     System.out.println("Wrong input");
                     System.out.println("Try again");
+                    break;
             }
         } while (!choice.equalsIgnoreCase("q"));
         System.out.println();

@@ -30,6 +30,10 @@ public class displayConfession {
             System.out.println("Reached limit for confessions posts");
             return;
         }
+        if (Integer.parseInt(startID.substring(2)) < 1){
+            System.out.println("You have reached the start of the list");
+            return;
+        }
         String replyTo = getOriginID(startID);
         boolean hasReply = true;
         if (replyTo == null) {
@@ -96,7 +100,6 @@ public class displayConfession {
             keys.add(element.getId());
         }
         int index = keys.indexOf(ID);
-        System.out.println(index);
         confessionPair pair = ls.get(index);
         System.out.println("#"+pair.getId());
         System.out.println("["+pair.getDate()+"]\n");
