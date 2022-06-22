@@ -29,6 +29,10 @@ public class confessionPair implements Comparable<confessionPair> {
         date = dateFormat.format(currentDate);
     }
 
+    public confessionPair(String replyid, confessionPair confess) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public Date getCurrentDate(){return currentDate;}
 
     public void setCurrentDate(Date date){

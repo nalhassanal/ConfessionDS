@@ -10,127 +10,72 @@ package guiconfession2;
  */
 import SQL.SQLconnect;
 import SQL.SQLutil;
+import fileUtil.FileUtil;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-import main.ContentQueue;
 import main.confession;
 import main.confessionPair;
+import main.ContentQueue;
+import main.MyQueue;
 
 
 
-public class Panel_2_1 extends javax.swing.JFrame {
+public class Panel_2_11 extends javax.swing.JFrame {
 
     private String confess;
-    //confession conf = new confession();
-    //SQLutil util = new SQLutil();
-    //SQLconnect sql = new SQLconnect();
-    //StringBuilder confessionContent = new StringBuilder();
-    //Connection con = sql.connector();
-    //String confessionID;
-    //private String currentdate;
-
-    /**
-     * Creates new form Panel_2_1
-     */
+    private ContentQueue queue = new ContentQueue();
     private String reply_id;
     private String confesss_user;
-    static Panel_2 data=new Panel_2();
-    private ContentQueue queue = new ContentQueue();
-    private String date;
-    private String idreply;
-     confessionPair confessions ;
-     String confessionID;
-     User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
-    public void setreply_id(String reply_id){
-        this.reply_id = reply_id;
-    }
- 
-    public void setconfesss_user(String confesss_user){
-         this.confesss_user = confesss_user;
-   }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-        public void setIdreply(String idreply) {
-        this.idreply = idreply;
-    }
-    
-    
     
     confession conf = new confession();
     SQLutil util = new SQLutil();
     SQLconnect sql = new SQLconnect();
     Connection con = sql.connector();
-  
     
-    public Panel_2_1() {
-      
+//    private FileUtil fileUtil = new FileUtil();  
+//    
+//    int id = util.getID(con) + 1;
+//    String confessionID = String.format("DS%05d", id);
+//    confessionPair confess_pair = new confessionPair(confessionID,confesss_user);
+//    
+//    String date = confess_pair.getDate();
+//    String idreply = confess_pair.getId();
+//    
+    
+    
+       public Panel_2_11(String reply_id, String confesss_user) {
+        
+        this.reply_id=reply_id;
+        this.confesss_user=confesss_user;
+//
+       if (reply_id == null){
+    createConfessions();
+//        }
+//        else{
+//            if(conf.checkForKey(reply_id)){
+//                replyConfessions();
+//            }
+//        }
+//        
+        
+        
+        
+        //int id = util.getID(con) + 1;
+        //confessionID = String.format("DS%05d", id);
+        //confessionPair confessions = new confessionPair(replyid, confess);
         initComponents();
-     
-    }
-    
-    public void process(){
-       int id = util.getID(con) + 1;
-       confessionID = String.format("DS%05d", id);
-       confessions = new confessionPair(confessionID , confesss_user);
-       
-       this.setDate(confessions.getDate());
-       this.setIdreply(confessions.getId());
-       this.date = confessions.getDate();
-       this.idreply = confessions.getId();
-        jLabel3.setText(date);
-        ConfessID.setText(idreply);
-        System.out.println(idreply);
-//       date = confessions.getDate();
-//       idreply = confessions.getId();
-        if (reply_id.isEmpty()){
-            createConfessions();
-        }
-        else{
-            replyConfessions();
-        }
+        
         
     }
-       
-    private void createConfessions(){
-        if(!queue.resultSpam(queue.mainStep(confessions))){
-            queue.successfulCheckDisplay(confessions);
-            queue.successfulReviewed(confessions);
-        }
-        else
-            queue.unSuccessfulPostDisplay();
-    }
-    
-    public void replyConfessions(){
-        if(!queue.resultSpam(queue.mainStep(confessions))){
-            queue.successfulCheckDisplay(confessions);
-            queue.successfulReviewedReply(confessions, reply_id, confessionID);
-        }else
-            queue.unSuccessfulPostDisplay();
-   }
-//    private Panel_2_1(Object object) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//    }
 
    
-
     
     
     
@@ -151,10 +96,10 @@ public class Panel_2_1 extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        showdate = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        ConfessID = new javax.swing.JLabel();
+        showdate1 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -234,29 +179,41 @@ public class Panel_2_1 extends javax.swing.JFrame {
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setForeground(new java.awt.Color(112, 112, 112));
 
-        jLabel3.setFont(new java.awt.Font("Poppins SemiBold", 1, 16)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(112, 112, 112));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText(date);
+        showdate.setFont(new java.awt.Font("Poppins SemiBold", 0, 16)); // NOI18N
+        showdate.setForeground(new java.awt.Color(112, 112, 112));
+        showdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        showdate.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                showdateInputMethodTextChanged(evt);
+            }
+        });
+        showdate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                showdateKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(showdate, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(showdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        showdate.getAccessibleContext().setAccessibleName("");
 
         jLabel12.setFont(new java.awt.Font("Poppins SemiBold", 0, 22)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(9, 181, 255));
@@ -265,26 +222,32 @@ public class Panel_2_1 extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
-        ConfessID.setFont(new java.awt.Font("Poppins SemiBold", 1, 16)); // NOI18N
-        ConfessID.setForeground(new java.awt.Color(112, 112, 112));
-        ConfessID.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ConfessID.setText(date);
+        showdate1.setFont(new java.awt.Font("Poppins SemiBold", 0, 16)); // NOI18N
+        showdate1.setForeground(new java.awt.Color(112, 112, 112));
+        showdate1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        showdate1.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                showdate1InputMethodTextChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(ConfessID, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(showdate1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+            .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ConfessID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(showdate1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel13.setFont(new java.awt.Font("Poppins SemiBold", 0, 20)); // NOI18N
@@ -371,6 +334,43 @@ public class Panel_2_1 extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void showdateInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_showdateInputMethodTextChanged
+
+        
+    }//GEN-LAST:event_showdateInputMethodTextChanged
+
+    private void showdate1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_showdate1InputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_showdate1InputMethodTextChanged
+
+    private void showdateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_showdateKeyPressed
+        // TODO add your handling code here:
+//        if(reply_id==null){
+//            createConfessions();
+//        }
+//    else{
+//             replyConfessions();
+//         }
+//
+         private void createConfessions(){
+        if(!queue.resultSpam(queue.mainStep(confess_pair))){
+            queue.successfulCheckDisplay(confess_pair);
+            queue.successfulReviewed(confess_pair);
+        }
+        else
+            queue.unSuccessfulPostDisplay();
+    }
+    
+    public void replyConfessions(){
+        if(!queue.resultSpam(queue.mainStep(confess_pair))){
+            queue.successfulCheckDisplay(confess_pair);
+            queue.successfulReviewedReply(confess_pair, reply_id, confessionID);
+        }else
+            queue.unSuccessfulPostDisplay();
+   }
+    
+    }//GEN-LAST:event_showdateKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -380,36 +380,37 @@ public class Panel_2_1 extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Panel_2_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Panel_2_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Panel_2_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Panel_2_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Panel_2_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Panel_2_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Panel_2_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Panel_2_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
         //</editor-fold>
 
         /* Create and display the form */
         
-        
+   
+
+    
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Panel_2_1().setVisible(true);
+                new Panel_2_1(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel ConfessID;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -417,12 +418,15 @@ public class Panel_2_1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JLabel showdate;
+    private javax.swing.JLabel showdate1;
     // End of variables declaration//GEN-END:variables
+
+
 }

@@ -57,14 +57,14 @@ public class confession {
         confessDisplay();
         StringBuilder confessionContent = new StringBuilder();
         String confessionID;
-        while (true){
-            String insert = input.nextLine();
-            if (insert.equals("-1")){
-                break;
-            }
-            confessionContent.append(insert).append("\n");
-        }
-        System.out.println("============================================================"); // 60 = signs
+//        while (true){
+//            String insert = input.nextLine();
+//            if (insert.equals("-1")){
+//                break;
+//            }
+//            confessionContent.append(insert).append("\n");
+//        }
+//        System.out.println("============================================================"); // 60 = signs
         int id = util.getID(con) + 1;
         confessionID = String.format("DS%05d", id);
         confessionPair confess = new confessionPair(confessionID, confessionContent.toString());
@@ -83,7 +83,7 @@ public class confession {
     public void createReply(String rootID){
         if (con == null)
             return;
-        replyDisplay();
+        //replyDisplay();
         String confessionID;
         StringBuilder confessionContent = new StringBuilder();
         while (true){
@@ -196,11 +196,13 @@ public class confession {
     }
 
     public void successfulPostDisplay(confessionPair content){
-        System.out.println("============================================================"); // 60 = signs
-        System.out.println(">> Submitted at "+content.getDate() + ".");
-        System.out.println(">> Confession post ID: " + content.getId() + ".");
-        System.out.println(">> Please wait for your confession to be reviewed.");
-        System.out.println("============================================================"); // 60 = signs
+        String date = content.getDate();
+        String idreply = content.getId();
+//        System.out.println("============================================================"); // 60 = signs
+//        System.out.println(">> Submitted at "+content.getDate() + ".");
+//        System.out.println(">> Confession post ID: " + content.getId() + ".");
+//        System.out.println(">> Please wait for your confession to be reviewed.");
+//        System.out.println("============================================================"); // 60 = signs
     }
 
     public void successfulReplyPostDisplay(confessionPair content){
