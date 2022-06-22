@@ -133,20 +133,20 @@ public class ContentQueue {
         boolean result = true;
         if(queue.getSize() <= 5){
             time = 15;
-//            result = checkSpam(); 
-            result = false;
+            result = checkRepeatInQueue(returnContentOnly(content));
+//            result = false;
             pair.setResultSpam(result);
             pair.setTime(time);
         }else if(queue.getSize() <= 10){
             time = 10;
-//            result = checkSpam();
-            result = false;
+            result = checkRepeatInQueue(returnContentOnly(content));
+//            result = false;
             pair.setResultSpam(result);
             pair.setTime(time);
         }else if(queue.getSize() > 10){
             time = 5;
-//            result = checkSpam();
-            result = false;
+            result = checkRepeatInQueue(returnContentOnly(content));
+//            result = false;
             pair.setResultSpam(result);
             pair.setTime(time);
         }
@@ -188,6 +188,12 @@ public class ContentQueue {
         }
     }
        
+    public String returnContentOnly(confessionPair content){
+        LinkedList<String> contents = util.getQueueContents(con);        
+        util.getContents(con);
+        return contents.get(contents.size()-1);
+    }
+    
     public boolean checkSpam(){
         boolean spam = predictSpam(queue.peek().split(" ") , true);
         return spam;
@@ -203,17 +209,19 @@ public class ContentQueue {
     }
     
     public void unSuccessfulPostDisplay(){
+        delete(queue.getQueue(queue.getSize()-1));
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Your submission has failed.");
         System.out.println(">> We detected that your confession might be a spam/unappropriate content.");
         System.out.println("============================================================"); // 60 = signs
     }
     
-    public static void main(String[] args) {
-        ContentQueue queue = new ContentQueue();
-        System.out.println();
-        
-    }
+//    public static void main(String[] args) {
+//        ContentQueue queue = new ContentQueue();
+//        System.out.println();
+//        queue.checkRepeatInQueue("hai my name\nis adam\ni live\nin machang");
+//        
+//    }
     
     public String getID(Connection con){
         // this method gets the latest id
@@ -236,8 +244,34 @@ public class ContentQueue {
     }
     
     public boolean checkRepeatInQueue(String content){
-        LinkedList temp1 = new LinkedList();
-        LinkedList temp2 = new LinkedList();
-        return false;
+        LinkedList<String> content1 = new LinkedList();
+        LinkedList<String> content2 = new LinkedList();
+        int index = 0;
+        
+        String[] temp = (content.split("[\s\n]"));
+        for(int i = 0; i < temp.length; i++){
+            content1.add(temp[i]);
+        }
+        for(int i = 0; i < queue.getSize() - 1; i++ ){
+            String[] temp2 = queue.getQueue(i).split("[\s\n]");
+            for(String element : temp2){
+                content2.add(element);
+            }
+            for(String element : content1){
+                for(String element2 : content2){
+                    if (element.equalsIgnoreCase(element2)){
+                        index++;
+                    }
+                }
+            }
+        }
+        int result = (index / content1.size()) * 100;
+        if(result > 50){;
+            return true;
+        }else{
+            return false;
+        }
     }
+    
+    
 }
