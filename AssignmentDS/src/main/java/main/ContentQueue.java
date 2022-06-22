@@ -132,21 +132,18 @@ public class ContentQueue {
         addToQueue();
         boolean result = true;
         if(queue.getSize() <= 5){
-            time = 15;
+            time = 15;  // for actual time, time = 900 for 15 minutes
             result = checkRepeatInQueue(returnContentOnly(content));
-//            result = false;
             pair.setResultSpam(result);
             pair.setTime(time);
         }else if(queue.getSize() <= 10){
-            time = 10;
+            time = 10;  // for actual time, time = 600 for 10 minutes
             result = checkRepeatInQueue(returnContentOnly(content));
-//            result = false;
             pair.setResultSpam(result);
             pair.setTime(time);
         }else if(queue.getSize() > 10){
-            time = 5;
+            time = 5;   // for actual time, time = 300 for 5 minutes
             result = checkRepeatInQueue(returnContentOnly(content));
-//            result = false;
             pair.setResultSpam(result);
             pair.setTime(time);
         }
