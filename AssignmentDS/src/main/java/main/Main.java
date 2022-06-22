@@ -1,7 +1,7 @@
 package main;
 
 import java.util.Scanner;
-
+import admin.Auth;
 public class Main {
     private final static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
@@ -21,9 +21,19 @@ public class Main {
                 case "a":
                     search();
                     break;
+
+                case "admin":
+                    admin();
+                    break;
+
+                default:
+                    System.out.println("------------------------------------------------------------"); // 60 - signs
+                    System.out.println("Wrong input");
+                    System.out.println("Try again");
             }
         } while (!choice.equalsIgnoreCase("q"));
         System.out.println();
+        input.close();
         System.out.println("Thank You For Using Our Service !");
     }
 
@@ -37,6 +47,11 @@ public class Main {
         System.out.println(">> \"A\" - search posts");
         System.out.println(">> \"Q\" - exit");
         System.out.println("------------------------------------------------------------"); // 60 - signs
+    }
+
+    public static void admin(){
+        Auth admin = new Auth();
+        admin.start();
     }
 
     public static void post(){

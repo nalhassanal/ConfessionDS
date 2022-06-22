@@ -110,7 +110,7 @@ public class admin {
         }
         ArrayList<replies> ls = getNeighbour(selected);
         LinkedList<replies> related = new LinkedList<>();
-        System.out.println(ls);
+//        System.out.println(ls);
         for(replies each: ls){
             String reply = each.getReply();
             if(checkReply(reply)){
@@ -118,20 +118,16 @@ public class admin {
                 related.addAll(next);
             }
         }
-        System.out.println(related);
+//        System.out.println(related);
 
-//        if (ls.isEmpty()){
-//            success = ;
-//        }
-//
-//        if(related.isEmpty()){
-//            // delete things in ls
-//            success = deleteRoots(ls);
-//        }
-//        else {
-//            // delete things in related && ls
-//            success = deleteRoots(related) && deleteRoots(ls);
-//        }
+        if(related.isEmpty()){
+            // delete things in ls
+            success = deleteRoots(ls);
+        }
+        else {
+            // delete things in related && ls
+            success = deleteRoots(related) && deleteRoots(ls);
+        }
 
         return success;
     }

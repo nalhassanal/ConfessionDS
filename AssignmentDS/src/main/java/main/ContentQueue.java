@@ -17,7 +17,7 @@ import static spam.spamFilter.predictSpam;
 
 public class ContentQueue {
     resultPair pair = new resultPair();
-    ArrayList list = new ArrayList();
+//    ArrayList list = new ArrayList();
     MyQueue<String> queue = new MyQueue<>();
     SQLutil util = new SQLutil();
     SQLconnect Conn = new SQLconnect();

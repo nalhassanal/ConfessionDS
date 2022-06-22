@@ -294,7 +294,7 @@ public class Panel_2_1 extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String replyid = null;
         String confess = null;
-        two.setData(replyid, confess);
+//        two.setData(replyid, confess);
         
         
     

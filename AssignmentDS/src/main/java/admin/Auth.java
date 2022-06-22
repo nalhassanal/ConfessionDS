@@ -53,26 +53,17 @@ public class Auth {
             return;
         }
         authDisplay();
-        System.out.println("------------------------------------------------------------"); // 60 - signs
-        System.out.print(">> ");
+        System.out.print(">> Continue? [y/n]");
         String choice = input.nextLine();
-        switch (choice.toLowerCase()){
-            case "l":
-                resultPair res = login();
-                while (!res.isResult()){
-                    res = login();
-                }
-                System.out.println("------------------------------------------------------------"); // 60 - signs
-                System.out.println();
-                System.out.println("Welcome " + res.getUser().getUsername());
-                admin.start();
-                break;
-
-            case "r":
-                if (register()){
-                    System.out.println("You have successfully registered an account");
-                }
-                break;
+        if (choice.equalsIgnoreCase("y")){
+            resultPair res = login();
+            while (!res.isResult()){
+                res = login();
+            }
+            System.out.println("------------------------------------------------------------"); // 60 - signs
+            System.out.println();
+            System.out.println("Welcome " + res.getUser().getUsername());
+            admin.start();
         }
     }
 
@@ -81,6 +72,7 @@ public class Auth {
         boolean success = false;
         User user = new User();
         String inUserN, inUserP;
+        System.out.println();
         System.out.println("------------------------------------------------------------"); // 60 - signs
         System.out.print(">> Enter your username: ");
         inUserN = input.nextLine();
@@ -187,8 +179,8 @@ public class Auth {
         System.out.println("============================================================"); // 60 = signs
         System.out.println("Welcome to Confessions DS Admin");
         System.out.println("============================================================"); // 60 = signs
-        System.out.println(">> L - login");
-        System.out.println(">> R - register");
+//        System.out.println(">> L - login");
+//        System.out.println(">> R - register");
     }
 
 }
