@@ -10,13 +10,10 @@ package guiconfession2;
  */
 import SQL.SQLconnect;
 import SQL.SQLutil;
-import admin.Auth;
+
 import admin.admin;
 import admin.User;
-import java.awt.Color;
-import javax.swing.JLabel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.JFrame;
