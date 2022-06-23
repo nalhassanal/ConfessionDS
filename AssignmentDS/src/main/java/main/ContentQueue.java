@@ -7,9 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,12 +14,10 @@ import static spam.spamFilter.predictSpam;
 
 public class ContentQueue {
     resultPair pair = new resultPair();
-//    ArrayList list = new ArrayList();
     MyQueue<String> queue = new MyQueue<>();
     SQLutil util = new SQLutil();
     SQLconnect Conn = new SQLconnect();
     private Connection con = Conn.connector();
-//    Timer timer = new Timer();
     int seconds = 0;
     int time = 0;
     

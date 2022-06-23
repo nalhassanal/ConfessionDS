@@ -38,6 +38,9 @@ public class Main {
         System.out.println("Thank You For Using Our Service !");
     }
 
+    /**
+     *
+     */
     public static void display(){
         System.out.println("============================================================"); // 60 = signs
         System.out.println("Welcome to Confessions DS");
@@ -50,16 +53,25 @@ public class Main {
         System.out.println("------------------------------------------------------------"); // 60 - signs
     }
 
+    /**
+     *
+     */
     public static void admin(){
         Auth admin = new Auth();
         admin.start();
     }
 
+    /**
+     *
+     */
     public static void post(){
         confession conf = new confession();
         conf.mainDisplay();
     }
 
+    /**
+     *
+     */
     public static void view(){
         displayConfession disp = new displayConfession();
         System.out.println("============================================================");
@@ -76,18 +88,11 @@ public class Main {
         }
     }
 
+    /**
+     *
+     */
     public static void search(){
         searchConfession search = new searchConfession();
         search.start();
-//        String choice;
-//        do {
-//            search.start();
-//            System.out.println("============================================================"); // 60 = signs
-//            System.out.println(">> Do you want to continue?");
-//            System.out.println(">> W - yes");
-//            System.out.println(">> X - no");
-//            choice = input.nextLine();
-//        }while (!choice.equalsIgnoreCase("x"));
     }
-
 }

@@ -9,11 +9,26 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class is the driver class for searching through a confession
+ */
 public class searchConfession {
-    private final SQLutil util;
-    private final Connection con;
+    /**
+     * Scanner object to allow user input to be read
+     */
     private final Scanner input;
+    /**
+     * SQLutil class object to allow access to SQL utilities
+     */
+    private final SQLutil util;
+    /**
+     * Connection object to allow connection to the mysql database
+     */
+    private final Connection con;
 
+    /**
+     *
+     */
     public searchConfession(){
         SQLconnect connect = new SQLconnect();
         con = connect.connector();
@@ -21,6 +36,9 @@ public class searchConfession {
         util = new SQLutil();
     }
 
+    /**
+     *
+     */
     public void start(){
         if(con == null){
             System.out.println("Could not connect to database");
@@ -51,6 +69,9 @@ public class searchConfession {
         }
     }
 
+    /**
+     * @param queried
+     */
     public void dateType(String queried){
         ArrayList<String> dates = util.getDate(con);
 //        System.out.println(dates);
@@ -118,6 +139,9 @@ public class searchConfession {
         } while (!choice.equalsIgnoreCase("q"));
     }
 
+    /**
+     * @param queried
+     */
     public void DTType(String queried){
         ArrayList<String> dateTimes = util.getDateTime(con);
         ArrayList<confessionPair> ls = util.readFromTable(con);
@@ -172,6 +196,9 @@ public class searchConfession {
         } while (!choice.equalsIgnoreCase("q"));
     }
 
+    /**
+     * @param queried
+     */
     public void IDType(String queried) {
         System.out.println(">> Search results by the keywords \"" + queried + "\".");
         ArrayList<confessionPair> ls = util.readFromTable(con);
@@ -201,9 +228,9 @@ public class searchConfession {
         } while (!choice.equalsIgnoreCase("q"));
 
     }
-    /*
-    TODO not complete yet
-        left only the next page part
+
+    /**
+     * @param queried
      */
     public void anyType(String queried){
         ArrayList<String> contents = util.getContents(con);
@@ -257,13 +284,17 @@ public class searchConfession {
                 choice = "q";
             }
             else if ("d".equalsIgnoreCase(choice)){
-                System.out.println("how do i flip to the next page bruh");
+                System.out.println("how do i flip to the next page");
             }
 
         } while (!choice.equalsIgnoreCase("q"));
 
     }
 
+    /**
+     * @param text
+     * @return
+     */
     public int patternCheck(String text){
         final String dateRegex = "\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])";
         final String dateTimeRegex = "\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) ([1-9]|0[1-9]|1[0-2]):[0-5][0-9] ([AaPp][Mm])$";
@@ -290,6 +321,9 @@ public class searchConfession {
             return 0;
     }
 
+    /**
+     *
+     */
     public void searchDisplay(){
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Searching formats and options:");
@@ -300,6 +334,9 @@ public class searchConfession {
         System.out.println("------------------------------------------------------------"); // 60 - signs
     }
 
+    /**
+     * @param type
+     */
     public void displayOptions(int type){
         System.out.println("------------------------------------------------------------"); // 60 - signs
 //        if (type != 1 && type != 2)

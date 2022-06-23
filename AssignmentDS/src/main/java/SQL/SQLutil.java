@@ -2,7 +2,6 @@ package SQL;
 
 import admin.User;
 import admin.replies;
-import fileUtil.FileUtil;
 import main.MyQueue;
 import main.confessionPair;
 
@@ -11,9 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
-import main.confession;
 
 public class SQLutil {
     public SQLutil(){}

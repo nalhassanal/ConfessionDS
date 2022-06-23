@@ -270,11 +270,11 @@ public class admin {
      * @param success the parameter that controls the text to be displayed
      */
     public void deleteStatusDisplay(boolean success){
-        String successText = ">> Deletion failed";
-        if(success)
-            successText = ">> Deletion successful";
         System.out.println("------------------------------------------------------------"); // 60 - signs
-        System.out.println(successText);
+        if(success)
+            System.out.println(">> Deletion successful");
+        else
+            System.out.println(">> Deletion failed");
         System.out.println();
     }
 }

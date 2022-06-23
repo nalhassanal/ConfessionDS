@@ -2,28 +2,43 @@ package main;
 
 import SQL.SQLconnect;
 import SQL.SQLutil;
-import fileUtil.*;
 
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
 public class confession {
-    private final FileUtil fileUtil = new FileUtil();
-    private final Scanner input = new Scanner(System.in);
-    private final SQLutil util = new SQLutil();
-    private final ContentQueue queue = new ContentQueue();
+    /**
+     * Scanner object to allow user input to be read
+     */
+    private final Scanner input;
+    /**
+     * SQLutil class object to allow access to SQL utilities
+     */
+    private final SQLutil util;
+    /**
+     * Connection object to allow connection to the mysql database
+     */
     private final Connection con;
+    /**
+     * ContentQueue object to allow manipulation of queue
+     */
+    private final ContentQueue queue;
 
+    /**
+     *
+     */
     public confession(){
-        con = connect();
-    }
-
-    private Connection connect(){
         SQLconnect sql = new SQLconnect();
-        return sql.connector();
+        con = sql.connector();
+        input = new Scanner(System.in);
+        util = new SQLutil();
+        queue = new ContentQueue();
     }
 
+    /**
+     *
+     */
     public void mainDisplay(){
         if(con == null){
             System.out.println("Could not connect to database");
@@ -50,6 +65,9 @@ public class confession {
         }
     }
 
+    /**
+     *
+     */
     public void createConfession(){
         if (con == null)
             return;
@@ -80,6 +98,9 @@ public class confession {
             unSuccessfulPostDisplay();
     }
 
+    /**
+     * @param rootID
+     */
     public void createReply(String rootID){
         if (con == null)
             return;
@@ -110,6 +131,11 @@ public class confession {
 
     }
 
+    /**
+     * @param rootID
+     * @param replyID
+     * @return
+     */
     public boolean addReply(String rootID, String replyID){
         boolean success = false;
         int main = Integer.parseInt(rootID.substring(2)),
@@ -129,6 +155,10 @@ public class confession {
         return success;
     }
 
+    /**
+     * @param pair
+     * @return
+     */
     public boolean addContent(confessionPair pair){
         boolean success = false;
         Date date = pair.getCurrentDate();
@@ -150,10 +180,18 @@ public class confession {
         return success;
     }
 
+    /**
+     * @param ID
+     * @return
+     */
     public boolean checkForKey(String ID){
         return getExistingID(Integer.parseInt(ID.substring(2))); // will remove DS from input string
     }
 
+    /**
+     * @param toBeChecked
+     * @return
+     */
     public boolean getExistingID(int toBeChecked){
         String query = "select * from confession";
         PreparedStatement ps;
@@ -173,6 +211,9 @@ public class confession {
         return id.contains(toBeChecked);
     }
 
+    /**
+     *
+     */
     public void confessDisplay(){
         System.out.println("\n============================================================"); // 60 = signs
         System.out.println(">> Please enter you confession content.");
@@ -181,6 +222,9 @@ public class confession {
         System.out.println("Confession content:");
     }
 
+    /**
+     *
+     */
     public void replyDisplay(){
         System.out.println("\n============================================================"); // 60 = signs
         System.out.println(">> Please enter your reply confession content.");
@@ -189,12 +233,18 @@ public class confession {
         System.out.println("Reply confession content:");
     }
 
+    /**
+     *
+     */
     public void unSuccessfulPostDisplay(){
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Your submission has failed");
         System.out.println("============================================================"); // 60 = signs
     }
 
+    /**
+     * @param content
+     */
     public void successfulPostDisplay(confessionPair content){
         String date = content.getDate();
         String idreply = content.getId();
@@ -205,6 +255,9 @@ public class confession {
         System.out.println("============================================================"); // 60 = signs
     }
 
+    /**
+     * @param content
+     */
     public void successfulReplyPostDisplay(confessionPair content){
         System.out.println("============================================================"); // 60 = signs
         System.out.println(">> Submitted at " + content.getDate() + ".");

@@ -11,15 +11,32 @@ import java.util.List;
 import java.util.Scanner;
 
 public class displayConfession {
-    private final Scanner input = new Scanner(System.in);
-    private final SQLutil util = new SQLutil();
+    /**
+     * Scanner object to allow user input to be read
+     */
+    private final Scanner input;
+    /**
+     * SQLutil class object to allow access to SQL utilities
+     */
+    private final SQLutil util;
+    /**
+     * Connection object to allow connection to the mysql database
+     */
     private final Connection con;
 
+    /**
+     *
+     */
     public displayConfession(){
         SQLconnect connector = new SQLconnect();
         con = connector.connector();
+        util = new SQLutil();
+        input = new Scanner(System.in);
     }
 
+    /**
+     * @param startID
+     */
     public void start(String startID){
         if(con == null){
             System.out.println("Could not connect to database");
@@ -74,6 +91,9 @@ public class displayConfession {
         } while (!choice.equalsIgnoreCase("q"));
     }
 
+    /**
+     * @param id
+     */
     public void processReplies(List<String> id){
         for (String element: id){
             if (element == null)
@@ -83,16 +103,28 @@ public class displayConfession {
         }
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public String decrement(String id){
         int num = Integer.parseInt(id.substring(2));
         return String.format("DS%05d", num -1);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public String increment(String id){
         int num = Integer.parseInt(id.substring(2));
         return String.format("DS%05d", num + 1);
     }
 
+    /**
+     * @param ID
+     * @param reply
+     */
     public void print(String ID, boolean reply){
         ArrayList<confessionPair> ls = util.readFromTable(con);
         ArrayList<String> keys = new ArrayList<>();
@@ -108,6 +140,10 @@ public class displayConfession {
         System.out.println(pair.getContent());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public boolean checkOrigin(String id){
         boolean success = false;
         int num = Integer.parseInt(id.substring(2)), retID = -1;
@@ -129,6 +165,10 @@ public class displayConfession {
         return success;
     }
 
+    /**
+     * @param startID
+     * @return
+     */
     public String getOriginID(String startID){
         if (!checkOrigin(startID))
             return null;
@@ -152,6 +192,10 @@ public class displayConfession {
         return String.format("DS%05d", retID);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public boolean checkReply(String id){
         boolean success = false;
         int num = Integer.parseInt(id.substring(2)), retID = -1;
@@ -173,6 +217,10 @@ public class displayConfession {
         return success;
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public ArrayList<String> getReplyID(String id){
         if (!checkReply(id))
             return null;
@@ -203,12 +251,20 @@ public class displayConfession {
         return IDs;
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public boolean checkLatest(String id){
         int latestIDNum = util.getID(con);
         int idNum = Integer.parseInt(id.substring(2));
         return idNum > latestIDNum;
     }
 
+    /**
+     * @param startID
+     * @param hasReply
+     */
     public void displayOptions(String startID, boolean hasReply){
         String reply = getOriginID(startID);// maybe method to check for replies from startID
         System.out.println("============================================================"); // 60 = signs
@@ -221,7 +277,10 @@ public class displayConfession {
         System.out.println(">> \"Q\" - quit viewing post");
         System.out.println("------------------------------------------------------------"); // 60 - signs
     }
-    
+
+    /**
+     *
+     */
     public void displayIDAvailable(){
         ArrayList<confessionPair> ls = util.readFromTable(con);
         ArrayList<String> keys = new ArrayList<>();
@@ -232,15 +291,15 @@ public class displayConfession {
         for (int i = 0; i <keys.size(); i++){
             if ( i % 5 == 0) {
                 System.out.println();
-//                continue;
             }
             System.out.print(keys.get(i) + "\t\t");
         }
-//        for(String key : keys){
-//            System.out.print(key + "  ");
-//        }
     }
-    
+
+    /**
+     * @param ID
+     * @return
+     */
     public boolean hasID(String ID){
         ArrayList<confessionPair> ls = util.readFromTable(con);
         ArrayList<String> keys = new ArrayList<>();
