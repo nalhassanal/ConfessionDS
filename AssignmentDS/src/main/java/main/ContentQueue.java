@@ -186,8 +186,7 @@ public class ContentQueue {
     }
        
     public String returnContentOnly(confessionPair content){
-        LinkedList<String> contents = util.getQueueContents(con);        
-        util.getContents(con);
+        LinkedList<String> contents = util.getQueueContents(con);
         return contents.get(contents.size()-1);
     }
     
