@@ -92,10 +92,6 @@ public class confession {
             queue.successfulReviewed(confess);
         }else
             queue.unSuccessfulPostDisplay();
-        if (addContent(confess)){   // sini akan ganti dengan addToQueue
-            successfulPostDisplay(confess);
-        }else
-            unSuccessfulPostDisplay();
     }
 
     /**
@@ -124,10 +120,6 @@ public class confession {
             queue.successfulReviewedReply(confess, rootID, confessionID);
         }else
             queue.unSuccessfulPostDisplay();
-        if (addContent(confess) && addReply(rootID, confessionID))
-            successfulReplyPostDisplay(confess);
-        else
-            unSuccessfulPostDisplay();
 
     }
 
