@@ -8,22 +8,85 @@ package guiconfession2;
  *
  * @author Acer
  */
-import java.awt.Color;
-import javax.swing.JLabel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import SQL.SQLconnect;
+import SQL.SQLutil;
+
+import admin.admin;
+import admin.User;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Panel_3 extends javax.swing.JFrame {
 
     /**
      * Creates new form Panel_3
      */
+    private Connection con;
+    SQLconnect connect = new SQLconnect();
+    private final SQLutil util = new SQLutil();
+    private admin admin = new admin();
+    
+    
+    
+    public String UserN;
+    public String Pass; 
+    
+    
     public Panel_3() {
         
         setSize(1024,768);
         setLocation(190,40);
+        con = connect.connector();
+        
+        if(con == null){
+            JFrame f; 
+            f=new JFrame();  
+            JOptionPane.showMessageDialog(f,"Could not connect to database. Please check connection.");  
+            return;
+        }
+        
         initComponents();
     }
+    
+    public void login(){
+    int progress = 0;
+        boolean success = false;
+        User user = new User();
+        
+//        System.out.println();
+//        System.out.println("------------------------------------------------------------"); // 60 - signs
+//        System.out.print(">> Enter your username: ");
+//        inUserN = input.nextLine();
+//        System.out.print(">> Enter your password: ");
+//        inUserP = input.nextLine();
+
+        ArrayList<User> ls = util.getUsers(con);
+        for(User element: ls){
+            if (element.getUsername().equals(UserN)) {
+                if (element.getPassword().equals(Pass)) {
+                    progress = 2;
+                    user.setUsername(element.getUsername());
+                    user.setPassword(element.getPassword());
+                    break;
+                }
+                else
+                    progress = 1;
+            }
+        }
+
+        if (progress==2)
+            success = true;
+        else {
+            //System.out.println("Wrong password or username");
+            JFrame g; 
+            g=new JFrame();  
+            JOptionPane.showMessageDialog(g,"rong password or username.");  
+        }
+
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,9 +107,9 @@ public class Panel_3 extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        username = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        password = new javax.swing.JPasswordField();
         jPanel5 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -137,12 +200,10 @@ public class Panel_3 extends javax.swing.JFrame {
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("Password :");
 
-        jTextField1.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-
-        jTextField2.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        username.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
+        username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                usernameActionPerformed(evt);
             }
         });
 
@@ -170,12 +231,12 @@ public class Panel_3 extends javax.swing.JFrame {
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(password))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -186,14 +247,14 @@ public class Panel_3 extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
-                .addGap(40, 40, 40)
+                    .addComponent(jLabel15)
+                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
                 .addComponent(jButton1)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         jPanel5.setBackground(new java.awt.Color(162, 162, 162));
@@ -252,12 +313,20 @@ public class Panel_3 extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_usernameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        UserN = username.getText();
+        Pass = password.getText();
+        
+       login();
+       Panel_3_1 newpanel = new Panel_3_1();
+        newpanel.show();
 
+        dispose();
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -308,7 +377,7 @@ public class Panel_3 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JPasswordField password;
+    private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

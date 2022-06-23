@@ -13,6 +13,12 @@ import java.util.Scanner;
 
 public class admin {
 
+    public static class User {
+
+        public User() {
+        }
+    }
+
     private class resultPair{
         boolean res;
         ArrayList<Integer> replies;

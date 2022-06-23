@@ -12,18 +12,28 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JTextField;
+import main.confession;
 
 public class Panel_2 extends javax.swing.JFrame {
 
     /**
      * Creates new form Panel_2
      */
+    
+    public String ReplyId;
+    public String ConfessUser; 
+    
+    
+   
     public Panel_2() {
         
-        setSize(1024,768);
-        setLocation(190,40);
+       
         initComponents();
     }
+
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,12 +60,12 @@ public class Panel_2 extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        reply_id = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        confess_user = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1024, 768));
@@ -189,18 +199,23 @@ public class Panel_2 extends javax.swing.JFrame {
                 .addComponent(jLabel18)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel17)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         jLabel11.setFont(new java.awt.Font("Poppins SemiBold", 0, 20)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(9, 181, 255));
         jLabel11.setText("Write your confession here:");
 
-        jTextField1.setFont(new java.awt.Font("Poppins SemiBold", 0, 12)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(112, 112, 112));
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        jTextField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField1.setDropMode(javax.swing.DropMode.INSERT);
+        reply_id.setFont(new java.awt.Font("Poppins SemiBold", 0, 12)); // NOI18N
+        reply_id.setForeground(new java.awt.Color(112, 112, 112));
+        reply_id.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        reply_id.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        reply_id.setDropMode(javax.swing.DropMode.INSERT);
+        reply_id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reply_idActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Poppins SemiBold", 0, 13)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(112, 112, 112));
@@ -214,11 +229,16 @@ public class Panel_2 extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Poppins SemiBold", 0, 16)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Submit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Poppins SemiBold", 0, 12)); // NOI18N
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        confess_user.setColumns(20);
+        confess_user.setFont(new java.awt.Font("Poppins SemiBold", 0, 12)); // NOI18N
+        confess_user.setRows(5);
+        jScrollPane1.setViewportView(confess_user);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -249,7 +269,7 @@ public class Panel_2 extends javax.swing.JFrame {
                                             .addGap(10, 10, 10)
                                             .addComponent(jLabel13)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(reply_id, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(0, 0, Short.MAX_VALUE)))
                                     .addGap(247, 247, 247)))
                             .addGap(6, 6, 6))))
@@ -268,7 +288,7 @@ public class Panel_2 extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(reply_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel12)
                 .addGap(18, 18, 18)
@@ -301,6 +321,28 @@ public class Panel_2 extends javax.swing.JFrame {
 
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ReplyId= reply_id.getText();
+        ConfessUser= confess_user.getText();
+        
+        Panel_2_1 obj=new Panel_2_1();
+        obj.setreply_id(ReplyId);
+        obj.setconfesss_user(ConfessUser);
+        obj.process();
+//        obj.process(ReplyId);
+//        obj.process(ConfessUser);
+        obj.setVisible(true);
+      
+        dispose();
+       
+       
+       
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void reply_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reply_idActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reply_idActionPerformed
 
     /**
      * @param args the command line arguments
@@ -338,6 +380,7 @@ public class Panel_2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea confess_user;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -358,7 +401,17 @@ public class Panel_2 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField reply_id;
     // End of variables declaration//GEN-END:variables
+
+    
+
+//    public void setData(String replyid, String confess) {
+//        replyid = jTextField1.getText();
+//        confess = jTextArea1.getText();
+//       
+//        
+//    }
+
+   
 }

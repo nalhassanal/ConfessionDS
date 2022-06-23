@@ -237,7 +237,7 @@
               <Color blue="ff" green="b5" red="9" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Search Confession Post ID :   #"/>
+            <Property name="text" type="java.lang.String" value="Search Confession :"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel5">
