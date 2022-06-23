@@ -14,23 +14,12 @@ public class confessionPair implements Comparable<confessionPair> {
         currentDate = null;
     }
 
-    public confessionPair(String content){
-        this.content = content;
-        currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a");
-        date = dateFormat.format(currentDate);
-    }
-
     public confessionPair(String id, String content){
         this.id = id;
         this.content = content;
         currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a");
         date = dateFormat.format(currentDate);
-    }
-
-    public confessionPair(String replyid, confessionPair confess) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public Date getCurrentDate(){return currentDate;}

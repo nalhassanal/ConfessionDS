@@ -27,7 +27,7 @@ public class searchConfession {
     private final Connection con;
 
     /**
-     *
+     * constructor that will initialize the class variables
      */
     public searchConfession(){
         SQLconnect connect = new SQLconnect();
@@ -37,7 +37,7 @@ public class searchConfession {
     }
 
     /**
-     *
+     * the starter method for the searchConfession class
      */
     public void start(){
         if(con == null){
@@ -70,7 +70,9 @@ public class searchConfession {
     }
 
     /**
-     * @param queried
+     * method that processes the searched text that is of date format
+     * and also prints out all the results of the search query
+     * @param queried the searched(input) text
      */
     public void dateType(String queried){
         ArrayList<String> dates = util.getDate(con);
@@ -140,7 +142,9 @@ public class searchConfession {
     }
 
     /**
-     * @param queried
+     * method that processes the searched text that is of date & time format
+     * and also prints out all the results of the search query
+     * @param queried the searched(input) text
      */
     public void DTType(String queried){
         ArrayList<String> dateTimes = util.getDateTime(con);
@@ -197,7 +201,9 @@ public class searchConfession {
     }
 
     /**
-     * @param queried
+     * method that processes the searched text that is of post ID format
+     * and also prints out all the results of the search query
+     * @param queried the searched(input) text
      */
     public void IDType(String queried) {
         System.out.println(">> Search results by the keywords \"" + queried + "\".");
@@ -230,7 +236,9 @@ public class searchConfession {
     }
 
     /**
-     * @param queried
+     * method that processes the searched text that is of any(open) format
+     * and also prints out all the results of the search query
+     * @param queried the searched(input) text
      */
     public void anyType(String queried){
         ArrayList<String> contents = util.getContents(con);
@@ -292,8 +300,10 @@ public class searchConfession {
     }
 
     /**
-     * @param text
-     * @return
+     * method that checks the input text with 3 separate regex that will determine
+     * which format of search is input
+     * @param text input text
+     * @return 3 for date pattern, 2 for date and time pattern, 1 for post ID pattern, 0 for any pattern
      */
     public int patternCheck(String text){
         final String dateRegex = "\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])";
@@ -322,7 +332,7 @@ public class searchConfession {
     }
 
     /**
-     *
+     * method that displays all the format that can be used to search confessions
      */
     public void searchDisplay(){
         System.out.println("============================================================"); // 60 = signs
@@ -335,7 +345,8 @@ public class searchConfession {
     }
 
     /**
-     * @param type
+     * method that displays the choices that can be done
+     * @param type control which choices are displayed
      */
     public void displayOptions(int type){
         System.out.println("------------------------------------------------------------"); // 60 - signs

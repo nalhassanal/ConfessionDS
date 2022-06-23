@@ -25,7 +25,7 @@ public class displayConfession {
     private final Connection con;
 
     /**
-     *
+     * constructor to initialize class variables
      */
     public displayConfession(){
         SQLconnect connector = new SQLconnect();
@@ -35,7 +35,8 @@ public class displayConfession {
     }
 
     /**
-     * @param startID
+     * starter method to start viewing the selected post ID
+     * @param startID the selected post ID
      */
     public void start(String startID){
         if(con == null){
@@ -43,19 +44,23 @@ public class displayConfession {
             System.out.println("Please check connection");
             return;
         }
+        // if the input id is more than last post
         if (checkLatest(startID)){
             System.out.println("Reached limit for confessions posts");
             return;
         }
+        // if the input id less than 1
         if (Integer.parseInt(startID.substring(2)) < 1){
             System.out.println("You have reached the start of the list");
             return;
         }
+
         String replyTo = getOriginID(startID);
         boolean hasReply = true;
         if (replyTo == null) {
             hasReply = false;
         }
+
         print(startID, hasReply);
         String choice;
         do {
@@ -92,6 +97,7 @@ public class displayConfession {
     }
 
     /**
+     * method that prints the replies to the replies
      * @param id
      */
     public void processReplies(List<String> id){
@@ -104,8 +110,9 @@ public class displayConfession {
     }
 
     /**
-     * @param id
-     * @return
+     * decreases the input id by 1
+     * @param id input ID
+     * @return the input ID decremented by 1
      */
     public String decrement(String id){
         int num = Integer.parseInt(id.substring(2));
@@ -113,8 +120,9 @@ public class displayConfession {
     }
 
     /**
-     * @param id
-     * @return
+     * increase the input id by 1
+     * @param id input ID
+     * @return the input ID increased by 1
      */
     public String increment(String id){
         int num = Integer.parseInt(id.substring(2));
@@ -122,8 +130,9 @@ public class displayConfession {
     }
 
     /**
-     * @param ID
-     * @param reply
+     * method that prints the input ID
+     * @param ID the input ID
+     * @param reply control variable to see if input ID has a reply or not
      */
     public void print(String ID, boolean reply){
         ArrayList<confessionPair> ls = util.readFromTable(con);
@@ -141,12 +150,13 @@ public class displayConfession {
     }
 
     /**
-     * @param id
-     * @return
+     * method that checks whether it is a reply to another confession
+     * @param id input id
+     * @return true if it is a reply to another confession, false otherwise
      */
     public boolean checkOrigin(String id){
         boolean success = false;
-        int num = Integer.parseInt(id.substring(2)), retID = -1;
+        int num = Integer.parseInt(id.substring(2));
         String query = "select * from reply";
         PreparedStatement ps;
         ResultSet rs;
@@ -155,7 +165,6 @@ public class displayConfession {
             rs = ps.executeQuery();
             while (rs.next()){
                 if (rs.getInt("reply") == num){
-                    retID = rs.getInt("main");
                     success = true;
                 }
             }
@@ -166,8 +175,9 @@ public class displayConfession {
     }
 
     /**
-     * @param startID
-     * @return
+     * method that gets the root of the input ID
+     * @param startID input id
+     * @return confession ID of the root of the input ID
      */
     public String getOriginID(String startID){
         if (!checkOrigin(startID))
@@ -193,12 +203,13 @@ public class displayConfession {
     }
 
     /**
-     * @param id
-     * @return
+     * method that checks whether it ID has a reply
+     * @param id input id
+     * @return true if it has a reply, false otherwise
      */
     public boolean checkReply(String id){
         boolean success = false;
-        int num = Integer.parseInt(id.substring(2)), retID = -1;
+        int num = Integer.parseInt(id.substring(2));
         String query = "select * from reply";
         PreparedStatement ps;
         ResultSet rs;
@@ -207,7 +218,6 @@ public class displayConfession {
             rs = ps.executeQuery();
             while (rs.next()){
                 if (rs.getInt("main") == num) {
-                    retID = rs.getInt("reply");
                     success = true;
                 }
             }
@@ -218,8 +228,9 @@ public class displayConfession {
     }
 
     /**
-     * @param id
-     * @return
+     * method that gets the replies of the input id
+     * @param id input id
+     * @return confession ID of the replies of the input id
      */
     public ArrayList<String> getReplyID(String id){
         if (!checkReply(id))
@@ -252,8 +263,9 @@ public class displayConfession {
     }
 
     /**
-     * @param id
-     * @return
+     * method that checks if the input ID is more than the latest id
+     * @param id input id
+     * @return true if ID > latestID, false otherwise
      */
     public boolean checkLatest(String id){
         int latestIDNum = util.getID(con);
@@ -262,8 +274,9 @@ public class displayConfession {
     }
 
     /**
-     * @param startID
-     * @param hasReply
+     * method that displays the options that can be taken
+     * @param startID the input id
+     * @param hasReply if the input ID has a reply
      */
     public void displayOptions(String startID, boolean hasReply){
         String reply = getOriginID(startID);// maybe method to check for replies from startID
@@ -279,7 +292,7 @@ public class displayConfession {
     }
 
     /**
-     *
+     * method that displays all available IDs
      */
     public void displayIDAvailable(){
         ArrayList<confessionPair> ls = util.readFromTable(con);
@@ -297,8 +310,9 @@ public class displayConfession {
     }
 
     /**
-     * @param ID
-     * @return
+     * method that checks if the input ID is in the database
+     * @param ID input id
+     * @return true if the input ID is in the database, false otherwise
      */
     public boolean hasID(String ID){
         ArrayList<confessionPair> ls = util.readFromTable(con);
