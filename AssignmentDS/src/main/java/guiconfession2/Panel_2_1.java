@@ -46,15 +46,8 @@ public class Panel_2_1 extends javax.swing.JFrame {
     private String idreply;
      confessionPair confessions ;
      String confessionID;
-     User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    
+   
     
     public void setreply_id(String reply_id){
         this.reply_id = reply_id;

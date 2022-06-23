@@ -124,7 +124,7 @@ public class Panel_3_1 extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(9, 181, 255));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel13.setText("Search Confession Post ID :   #");
+        jLabel13.setText("Search Confession :");
 
         jPanel5.setBackground(new java.awt.Color(162, 162, 162));
         jPanel5.setPreferredSize(new java.awt.Dimension(1024, 30));
