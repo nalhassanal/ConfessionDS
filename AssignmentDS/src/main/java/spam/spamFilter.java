@@ -14,19 +14,24 @@ import java.util.Queue;
 import java.util.Set;
 
 public class spamFilter{
-    public static void main(String[] args) {
-        String [] input = {"hey do you want to go to a movie tonight?" , "gay", "test"};
-        for(String in : input){
-            boolean spam = predictSpam(in.split(" ") , true);
-            System.out.println(spam);
-        }
-    }
 
+    /**
+     * the starter method of the spamFilter class
+     * @param ls the array of the input words
+     * @param verbose to set verbosity which allows some process to be printed
+     * @return true if the input text is spam, false otherwise
+     */
     public static boolean predictSpam(String [] ls, boolean verbose){
         return readAndPrepareData(ls, verbose);
     }
 
-    public static boolean readAndPrepareData(String [] ls, boolean verbose){
+    /**
+     * to read the spam.csv file and then manipulate it to a bag of spam word probabilities
+     * @param ls the array of the input words
+     * @param verbose to set verbosity which allows some process to be printed
+     * @return true if the input text is spam, false otherwise
+     */
+    public static boolean readAndPrepareData(String[] ls, boolean verbose){
         Queue<String> temp_df = new LinkedList<>();
         String fileName = ".\\dataFiles\\spam.csv";
         try{
@@ -128,11 +133,19 @@ public class spamFilter{
         }
 
         return predictText(train_spam_bow, train_non_spam_bow , ls, verbose, FRAC_SPAM_TEXT);
-        // return true;
     }
 
+    /**
+     * the method that actually predicts whether the text is spam or not
+     * @param train_spam_bow the bag of spam probabilities
+     * @param train_non_spam_bow the bag of non spam probabilities
+     * @param ls the array of the input words
+     * @param verbose to set verbosity which allows some process to be printed
+     * @param FRAC_SPAM_TEXT the fraction of spam probabilities over non spam probabilities
+     * @return true if the spamScore is more than or equal to nonSpamScore, false otherwise
+     */
     public static boolean predictText(Map<String, Double> train_spam_bow,
-                                      Map<String, Double> train_non_spam_bow, String [] ls,
+                                      Map<String, Double> train_non_spam_bow, String[] ls,
                                       boolean verbose, double FRAC_SPAM_TEXT){
         double spam_score, non_spam_score;
 
@@ -176,11 +189,20 @@ public class spamFilter{
     }
 
 
-
+    /**
+     * converts an arraylist into a Set object
+     * @param values the values to be converted
+     * @return a Set of String object
+     */
     public static Set<String> setOf(ArrayList<String> values){
         return new HashSet<>(values);
     }
 
+    /**
+     * method to remove all punctuations in a word or sentence
+     * @param source the string to be manipulated
+     * @return a string with all it's punctuations removed
+     */
     public static String removePunctuations(String source){
         return source.replaceAll("\\p{Punct}", "");
     }
