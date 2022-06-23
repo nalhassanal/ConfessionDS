@@ -74,10 +74,10 @@ public class confession {
             queue.successfulReviewed(confess);
         }else
             queue.unSuccessfulPostDisplay();
-//        if (addContent(confess)){   // sini akan ganti dengan addToQueue
-//            successfulPostDisplay(confess);
-//        }else
-//            unSuccessfulPostDisplay();
+        if (addContent(confess)){   // sini akan ganti dengan addToQueue
+            successfulPostDisplay(confess);
+        }else
+            unSuccessfulPostDisplay();
     }
 
     public void createReply(String rootID){
@@ -103,10 +103,10 @@ public class confession {
             queue.successfulReviewedReply(confess, rootID, confessionID);
         }else
             queue.unSuccessfulPostDisplay();
-//        if (addContent(confess) && addReply(rootID, confessionID))
-//            successfulReplyPostDisplay(confess);
-//        else
-//            unSuccessfulPostDisplay();
+        if (addContent(confess) && addReply(rootID, confessionID))
+            successfulReplyPostDisplay(confess);
+        else
+            unSuccessfulPostDisplay();
 
     }
 
@@ -198,11 +198,11 @@ public class confession {
     public void successfulPostDisplay(confessionPair content){
         String date = content.getDate();
         String idreply = content.getId();
-//        System.out.println("============================================================"); // 60 = signs
-//        System.out.println(">> Submitted at "+content.getDate() + ".");
-//        System.out.println(">> Confession post ID: " + content.getId() + ".");
-//        System.out.println(">> Please wait for your confession to be reviewed.");
-//        System.out.println("============================================================"); // 60 = signs
+        System.out.println("============================================================"); // 60 = signs
+        System.out.println(">> Submitted at "+content.getDate() + ".");
+        System.out.println(">> Confession post ID: " + content.getId() + ".");
+        System.out.println(">> Please wait for your confession to be reviewed.");
+        System.out.println("============================================================"); // 60 = signs
     }
 
     public void successfulReplyPostDisplay(confessionPair content){
