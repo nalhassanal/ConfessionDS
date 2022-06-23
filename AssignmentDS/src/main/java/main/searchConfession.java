@@ -248,7 +248,7 @@ public class searchConfession {
                 start();
                 choice = "q";
             }
-            else if(!choice.equalsIgnoreCase("q") && numIDpair.containsKey(Integer.valueOf(choice))){
+            else if(patternCheck(choice) == 0 &&!choice.equalsIgnoreCase("q") && numIDpair.containsKey(Integer.valueOf(choice))){
                 IDType(numIDpair.get(Integer.valueOf(choice)));
                 choice = "q";
             }
