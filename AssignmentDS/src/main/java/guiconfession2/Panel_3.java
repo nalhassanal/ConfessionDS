@@ -307,9 +307,10 @@ public class Panel_3 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Panel_1 jframe1 = new Panel_1();
-        jframe1.show();
+//        Panel_1 jframe1 = new Panel_1();
+//        jframe1.show();
 
+new Panel_1().setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 

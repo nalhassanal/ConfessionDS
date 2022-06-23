@@ -57,14 +57,14 @@ public class confession {
         confessDisplay();
         StringBuilder confessionContent = new StringBuilder();
         String confessionID;
-//        while (true){
-//            String insert = input.nextLine();
-//            if (insert.equals("-1")){
-//                break;
-//            }
-//            confessionContent.append(insert).append("\n");
-//        }
-//        System.out.println("============================================================"); // 60 = signs
+        while (true){
+            String insert = input.nextLine();
+            if (insert.equals("-1")){
+                break;
+            }
+            confessionContent.append(insert).append("\n");
+        }
+        System.out.println("============================================================"); // 60 = signs
         int id = util.getID(con) + 1;
         confessionID = String.format("DS%05d", id);
         confessionPair confess = new confessionPair(confessionID, confessionContent.toString());
@@ -83,7 +83,7 @@ public class confession {
     public void createReply(String rootID){
         if (con == null)
             return;
-        //replyDisplay();
+        replyDisplay();
         String confessionID;
         StringBuilder confessionContent = new StringBuilder();
         while (true){

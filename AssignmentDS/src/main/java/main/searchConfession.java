@@ -53,7 +53,7 @@ public class searchConfession {
 
     public void dateType(String queried){
         ArrayList<String> dates = util.getDate(con);
-        System.out.println(dates);
+//        System.out.println(dates);
         ArrayList<confessionPair> ls = util.readFromTable(con);
         Queue<String> ids = new LinkedList<>();
         Queue<String> content = new LinkedList<>();
@@ -74,7 +74,7 @@ public class searchConfession {
 
         temp = new LinkedHashSet<>(content);
         content = new LinkedList<>(temp);
-        System.out.println(ids.size());
+//        System.out.println(ids.size());
 
         System.out.println(">> Search results by the keywords \"" + queried + "\".");
         if (ids.isEmpty() && content.isEmpty()) {
@@ -302,8 +302,8 @@ public class searchConfession {
 
     public void displayOptions(int type){
         System.out.println("------------------------------------------------------------"); // 60 - signs
-        if (type != 1 && type != 2)
-            System.out.println(">> \"D\" - view next page");
+//        if (type != 1 && type != 2)
+//            System.out.println(">> \"D\" - view next page");
         if (type != 1)
             System.out.println(">> <number> or \"#DSXXXXX\" - view selected confession post");
         System.out.println(">> \"R\" - search again");
