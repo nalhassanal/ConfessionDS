@@ -1,8 +1,0 @@
-this
-is
-a
-{Test}
-for
-(special)
-[random]
-charaacters

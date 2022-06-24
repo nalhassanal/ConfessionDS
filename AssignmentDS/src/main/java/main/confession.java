@@ -26,7 +26,7 @@ public class confession {
     private final ContentQueue queue;
 
     /**
-     *
+     * the constructor method that initializes the class variables
      */
     public confession(){
         SQLconnect sql = new SQLconnect();
@@ -37,7 +37,7 @@ public class confession {
     }
 
     /**
-     *
+     * the starter method of the confession process
      */
     public void mainDisplay(){
         if(con == null){
@@ -66,7 +66,7 @@ public class confession {
     }
 
     /**
-     *
+     * the driver method that allows a user to post a confession
      */
     public void createConfession(){
         if (con == null)
@@ -95,7 +95,8 @@ public class confession {
     }
 
     /**
-     * @param rootID
+     * the driver method that allows a user to reply to another post
+     * @param rootID gets the replied to post ID
      */
     public void createReply(String rootID){
         if (con == null)
@@ -124,9 +125,10 @@ public class confession {
     }
 
     /**
-     * @param rootID
-     * @param replyID
-     * @return
+     * the method that will add the confession into the reply table in the database
+     * @param rootID the replied ID
+     * @param replyID the new ID
+     * @return true if the process is successful, false otherwise
      */
     public boolean addReply(String rootID, String replyID){
         boolean success = false;
@@ -148,8 +150,9 @@ public class confession {
     }
 
     /**
-     * @param pair
-     * @return
+     * the method that will add the confession into the confession table in the database
+     * @param pair the confession itself
+     * @return true if the process is successful, false otherwise
      */
     public boolean addContent(confessionPair pair){
         boolean success = false;
@@ -173,16 +176,18 @@ public class confession {
     }
 
     /**
-     * @param ID
-     * @return
+     * checks if the input ID exists
+     * @param ID input ID
+     * @return true if the ID contains in the database, false otherwise
      */
     public boolean checkForKey(String ID){
         return getExistingID(Integer.parseInt(ID.substring(2))); // will remove DS from input string
     }
 
     /**
-     * @param toBeChecked
-     * @return
+     * checks if the input ID exists within the database or not
+     * @param toBeChecked the input ID
+     * @return true if the ID contains in the database, false otherwise
      */
     public boolean getExistingID(int toBeChecked){
         String query = "select * from confession";
@@ -204,7 +209,7 @@ public class confession {
     }
 
     /**
-     *
+     * a method that displays the main option for a post
      */
     public void confessDisplay(){
         System.out.println("\n============================================================"); // 60 = signs
@@ -215,7 +220,7 @@ public class confession {
     }
 
     /**
-     *
+     * a method that displays the main option for a reply post
      */
     public void replyDisplay(){
         System.out.println("\n============================================================"); // 60 = signs
@@ -226,7 +231,7 @@ public class confession {
     }
 
     /**
-     *
+     * a method that will display the failure of posting a confession
      */
     public void unSuccessfulPostDisplay(){
         System.out.println("============================================================"); // 60 = signs
@@ -235,7 +240,8 @@ public class confession {
     }
 
     /**
-     * @param content
+     * the display method of a successful post which will display its time of creation and its ID
+     * @param content the post itself
      */
     public void successfulPostDisplay(confessionPair content){
         String date = content.getDate();
@@ -248,7 +254,8 @@ public class confession {
     }
 
     /**
-     * @param content
+     * the display method of a successful reply post which will display its time of creation and its ID
+     * @param content the post itself
      */
     public void successfulReplyPostDisplay(confessionPair content){
         System.out.println("============================================================"); // 60 = signs
